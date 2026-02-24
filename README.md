@@ -34,6 +34,11 @@ Les données ABIDE proviennent de plusieurs sites d’acquisition. Si l’on ne 
 
 **Description de la tâche** :  
 Dans la continuité de la premiere tache, celle-ci consiste à refaire l’analyse en utilisant uniquement les données provenant d’un seul site d’acquisition, le site NYU. Le même pipeline de classification est appliqué afin d’entraîner et d’évaluer le modèle sur ce sous-ensemble de données. Les performances obtenues sont ensuite comparées à celles de l’analyse réalisée sur l’ensemble des sites.
+Dans ABIDE II, NYU est séparé en deux échantillons (Sample 1 et Sample 2). Comme Sample 2 utilise une séquence IRMf différente, nous réalisons l’analyse single-site sur un seul échantillon (NYU Sample 1 https://fcon_1000.projects.nitrc.org/indi/abide/abide_II.html) pour garder un cadre vraiment homogène.
+
+**Description de la tâche** :  
+
+Dans ABIDE II, NYU est séparé en deux échantillons (Sample 1 et Sample 2). Comme Sample 2 utilise une séquence IRMf différente, nous réalisons l’analyse single-site sur un seul échantillon (**[NYU Sample 1](https://fcon_1000.projects.nitrc.org/indi/abide/abide_II.html)**).
 
 **Lien avec le projet initial** :  
 Le projet ABIDE-fMRI utilise des données collectées dans plusieurs sites différents. Cette tâche permet de s’appuyer sur cette structure multi-site pour examiner plus concrètement l’effet des différences entre sites sur les résultats.
