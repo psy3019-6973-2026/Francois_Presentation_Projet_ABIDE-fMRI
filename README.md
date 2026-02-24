@@ -27,7 +27,7 @@ Enfin, le projet initial était déjà bien structuré, mais il laissait suffisa
 **Objectif de la tâche** :  
 L’objectif de cette tâche est d’évaluer dans quelle mesure le choix de la stratégie de validation croisée influence les performances des modèles de classification ASD vs TD dans le contexte d’un dataset multi-site comme ABIDE.
 
-**Description de la démarche** :  
+**Description de la tâche** :  
 Pour cela, plusieurs stratégies de validation croisée sont comparées : *StratifiedKFold*, *GroupKFold* en utilisant le site d’acquisition comme variable de groupe, et *Leave-One-Site-Out*. Afin de garantir une comparaison équitable, le modèle, ses paramètres et les métriques d’évaluation sont conservés identiques ; seule la stratégie de validation croisée est modifiée. Cette approche permet d’isoler l’effet du schéma de validation sur les performances observées.
 
 **Lien avec le projet initial** :  
