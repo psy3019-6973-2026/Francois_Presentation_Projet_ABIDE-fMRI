@@ -18,7 +18,7 @@ Eva Villeneuve (**[GitHub](https://github.com/psy3019-6973-2026/Villeneuve_Proje
 
 ## 3. Présentation des tâches :
 
-### Tâche 1 — Comparaison des stratégies de validation croisée
+### Tâche 1 : Comparaison des stratégies de validation croisée
 
 **Description de la tâche** :  
 Cette tâche vise à comparer plusieurs stratégies de validation croisée (*StratifiedKFold*, *GroupKFold* par site et *Leave-One-Site-Out*) afin de voir comment le choix de la validation influence la performance des modèles de classification ASD vs TD.  
@@ -29,3 +29,14 @@ Le projet ABIDE-fMRI de départ teste déjà différentes approches de validatio
 
 **Pourquoi c’est pertinent** :  
 Les données ABIDE proviennent de plusieurs sites d’acquisition. Si l’on ne tient pas compte de cette structure, les performances peuvent sembler meilleures qu’elles ne le sont réellement. En comparant des stratégies qui prennent en compte les sites, cette tâche permet d’évaluer plus correctement la robustesse et la capacité de généralisation des modèles.
+
+### Tâche 2 : Analyse d’un sous-échantillon (site NYU)
+
+**Description de la tâche** :  
+Dans la continuité de la premiere tache, celle-ci consiste à refaire l’analyse en utilisant uniquement les données provenant d’un seul site d’acquisition, le site NYU. Le même pipeline de classification est appliqué afin d’entraîner et d’évaluer le modèle sur ce sous-ensemble de données. Les performances obtenues sont ensuite comparées à celles de l’analyse réalisée sur l’ensemble des sites.
+
+**Lien avec le projet initial** :  
+Le projet ABIDE-fMRI utilise des données collectées dans plusieurs sites différents. Cette tâche permet de s’appuyer sur cette structure multi-site pour examiner plus concrètement l’effet des différences entre sites sur les résultats.
+
+**Pourquoi c’est pertinent** :  
+En se concentrant sur un seul site, on réduit les différences liées aux scanners et aux protocoles d’acquisition. Si les performances sont meilleures dans ce contexte, cela suggère que les effets de site peuvent compliquer l’entraînement de modèles capables de bien généraliser à l’ensemble des données ABIDE.
