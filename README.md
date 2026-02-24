@@ -16,7 +16,7 @@ Les données utilisées proviennent du dataset **[ABIDE – Autism Brain Imaging
 Le projet repose sur l’extraction de matrices de connectivité fonctionnelle à partir de données d’IRMf au repos. Ces matrices servent ensuite de variables d’entrée pour différents modèles de machine learning (par exemple des classifieurs linéaires ou à marge maximale).
 Une attention particulière est portée à l’évaluation des performances des modèles, notamment à travers l’utilisation de plusieurs stratégies de validation croisée. Le projet explore ainsi comment le choix du modèle et du schéma de validation influence la capacité de classification ASD vs TD.
 
-**Resultat**
+**Présentation des résultats**
 
 ## 2. Pourquoi ce projet ?
 
