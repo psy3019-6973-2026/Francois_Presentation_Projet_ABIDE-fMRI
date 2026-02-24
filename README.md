@@ -40,3 +40,14 @@ Le projet ABIDE-fMRI utilise des données collectées dans plusieurs sites diff�
 
 **Pourquoi c’est pertinent** :  
 En se concentrant sur un seul site, on réduit les différences liées aux scanners et aux protocoles d’acquisition. Si les performances sont meilleures dans ce contexte, cela suggère que les effets de site peuvent compliquer l’entraînement de modèles capables de bien généraliser à l’ensemble des données ABIDE.
+
+### Tâche 3 : Visualisations et interprétation des résultats 
+
+**Description de la tâche** :  
+Cette tâche consiste à produire des visualisations à partir des résultats obtenus lors des analyses précédentes. Cela inclut notamment des heatmaps de connectivité moyenne pour les groupes ASD et TD, des courbes d’apprentissage, ainsi que des graphiques montrant la distribution des scores selon les folds de validation croisée.
+
+**Lien avec le projet initial** :  
+Le projet ABIDE-fMRI propose déjà plusieurs analyses quantitatives. Cette tâche permet de compléter ces résultats en les rendant plus lisibles et interprétables grâce à des visualisations, tout en s’appuyant sur les sorties des modèles existants.
+
+**Pourquoi c’est pertinent** :  
+Les visualisations permettent de mieux comprendre comment les modèles se comportent, au-delà d’un simple score de performance. Elles aident à évaluer la stabilité des résultats selon les folds de validation croisée, à repérer d’éventuelles différences globales entre les groupes ASD et TD, et à interpréter plus facilement la robustesse des modèles.
