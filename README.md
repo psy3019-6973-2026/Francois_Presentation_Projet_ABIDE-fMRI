@@ -1,7 +1,7 @@
 # Francois_Presentation_Projet_ABIDE-fMRI
 Présentation des taches pour le projet ABIDE-fMRI
 
-## Présentation du projet initial :
+## 1. Présentation du projet initial :
 
 **Projet initial** :  
 **[*Using fMRI Data to Predict Autism Diagnoses with Machine Learning*](https://github.com/brainhack-school2020/abide-fmri)**
@@ -12,4 +12,7 @@ Le projet initialement réalisé par Emily Chen, Andréanne Proulx et Mikkel Sch
 **Présentation des données** :  
 Les données utilisées proviennent du dataset **[ABIDE – Autism Brain Imaging Data Exchange](https://fcon_1000.projects.nitrc.org/indi/abide/)**, une base de données ouverte regroupant des données d’IRM fonctionnelle au repos prétraitées, incluant plusieurs centaines de sujets ASD et TD provenant de plus de 20 sites de recherche internationaux.
 
+## 2. Pourquoi ce projet ?
+
+Eva Villeneuve (**[GitHub](https://github.com/psy3019-6973-2026/Villeneuve_Projet_mi-session/tree/main)**) et moi-même avons choisi ce projet car
 
