@@ -24,15 +24,18 @@ Enfin, le projet initial était déjà bien structuré, mais il laissait suffisa
 
 ### Tâche 1 : Comparaison des stratégies de validation croisée
 
-**Description de la tâche** :  
-Cette tâche vise à comparer plusieurs stratégies de validation croisée (*StratifiedKFold*, *GroupKFold* par site et *Leave-One-Site-Out*) afin de voir comment le choix de la validation influence la performance des modèles de classification ASD vs TD.  
-Le modèle et ses paramètres restent inchangés, ce qui permet d’observer uniquement l’effet du choix de la validation croisée sur les performances.
+**Objectif de la tâche** :  
+L’objectif de cette tâche est d’évaluer dans quelle mesure le choix de la stratégie de validation croisée influence les performances des modèles de classification ASD vs TD dans le contexte d’un dataset multi-site comme ABIDE.
+
+**Description de la démarche** :  
+Pour cela, plusieurs stratégies de validation croisée sont comparées : *StratifiedKFold*, *GroupKFold* en utilisant le site d’acquisition comme variable de groupe, et *Leave-One-Site-Out*. Afin de garantir une comparaison équitable, le modèle, ses paramètres et les métriques d’évaluation sont conservés identiques ; seule la stratégie de validation croisée est modifiée. Cette approche permet d’isoler l’effet du schéma de validation sur les performances observées.
 
 **Lien avec le projet initial** :  
-Le projet ABIDE-fMRI de départ teste déjà différentes approches de validation croisée. Cette tâche permet d’aller plus loin en comparant ces stratégies de manière plus structurée, afin de mieux comprendre leur impact sur les résultats.
+Le projet ABIDE-fMRI de départ explore déjà différentes approches de validation croisée. Cette tâche s’inscrit dans sa continuité en proposant une comparaison plus structurée et systématique de ces stratégies, dans le but de mieux comprendre leur impact sur les résultats.
 
 **Pourquoi c’est pertinent** :  
-Les données ABIDE proviennent de plusieurs sites d’acquisition. Si l’on ne tient pas compte de cette structure, les performances peuvent sembler meilleures qu’elles ne le sont réellement. En comparant des stratégies qui prennent en compte les sites, cette tâche permet d’évaluer plus correctement la robustesse et la capacité de généralisation des modèles.
+ABIDE regroupe des données provenant de plusieurs sites d’acquisition, ce qui introduit des différences liées aux scanners, aux protocoles et aux populations étudiées. Lorsque des données issues d’un même site sont présentes à la fois dans les ensembles d’entraînement et de test, le modèle peut exploiter des caractéristiques spécifiques au site, ce qui peut conduire à une surestimation des performances.  
+Les stratégies de validation croisée tenant compte des sites, comme *GroupKFold* ou *Leave-One-Site-Out*, permettent de contrôler cet effet en séparant explicitement les sites entre l’entraînement et le test, et offrent ainsi une évaluation plus réaliste de la capacité de généralisation des modèles.
 
 ### Tâche 2 : Analyse d’un sous-échantillon (site NYU)
 
