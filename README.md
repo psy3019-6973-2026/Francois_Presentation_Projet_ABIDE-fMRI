@@ -7,10 +7,16 @@ Présentation des tâches pour le projet ABIDE-fMRI
 **[*Using fMRI Data to Predict Autism Diagnoses with Machine Learning*](https://github.com/brainhack-school2020/abide-fmri)**
 
 **Présentation du projet** :  
-Le projet initialement réalisé par Emily Chen, Andréanne Proulx et Mikkel Schöttner a pour objectif de comparer plusieurs modèles d’apprentissage automatique ainsi que différentes stratégies de validation croisée afin d’évaluer leur capacité à distinguer des individus présentant un trouble du spectre autistique (Autism Spectrum Disorder, ASD) de contrôles typiques (Typically Developed, TD), à partir de données de connectivité cérébrale issues de l’analyse de l’IRM fonctionnelle au repos.
+Le projet initialement réalisé par Emily Chen, Andréanne Proulx et Mikkel Schöttner s’inscrit dans un contexte de recherche en neurosciences computationnelles visant à explorer le potentiel de l’imagerie cérébrale fonctionnelle pour la classification de troubles neurodéveloppementaux. Dans ce projet de Machine Leerning supervisé sont utiliser afin de classer les participants présentant un trouble du spectre de l’autisme (TSA) de contrôles typiques (TD), à partir de données d’IRM fonctionnelle au repos et de mesures de connectivité cérébrale.
 
 **Présentation des données** :  
 Les données utilisées proviennent du dataset **[ABIDE – Autism Brain Imaging Data Exchange](https://fcon_1000.projects.nitrc.org/indi/abide/)**, une base de données ouverte regroupant des données d’IRM fonctionnelle au repos prétraitées, incluant plusieurs centaines de sujets ASD et TD provenant de plus de 20 sites de recherche internationaux.
+
+**Présentation de la méthode**
+Le projet repose sur l’extraction de matrices de connectivité fonctionnelle à partir de données d’IRMf au repos. Ces matrices servent ensuite de variables d’entrée pour différents modèles de machine learning (par exemple des classifieurs linéaires ou à marge maximale).
+Une attention particulière est portée à l’évaluation des performances des modèles, notamment à travers l’utilisation de plusieurs stratégies de validation croisée. Le projet explore ainsi comment le choix du modèle et du schéma de validation influence la capacité de classification ASD vs TD.
+
+**Resultat**
 
 ## 2. Pourquoi ce projet ?
 
