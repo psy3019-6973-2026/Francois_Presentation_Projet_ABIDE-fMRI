@@ -12,7 +12,7 @@ Le projet initialement réalisé par Emily Chen, Andréanne Proulx et Mikkel Sch
 **Présentation des données** :  
 Les données utilisées proviennent du dataset **[ABIDE – Autism Brain Imaging Data Exchange](https://fcon_1000.projects.nitrc.org/indi/abide/)**, une base de données ouverte regroupant des données d’IRM fonctionnelle au repos prétraitées, incluant plusieurs centaines de sujets ASD et TD provenant de plus de 20 sites de recherche internationaux.
 
-**Présentation de la méthode**
+**Présentation de la méthode** :
 Le projet repose sur l’extraction de matrices de connectivité fonctionnelle à partir de données d’IRMf au repos. Ces matrices servent ensuite de variables d’entrée pour différents modèles de machine learning (par exemple des classifieurs linéaires ou à marge maximale).
 Une attention particulière est portée à l’évaluation des performances des modèles, notamment à travers l’utilisation de plusieurs stratégies de validation croisée. Le projet explore ainsi comment le choix du modèle et du schéma de validation influence la capacité de classification ASD vs TD.
 
