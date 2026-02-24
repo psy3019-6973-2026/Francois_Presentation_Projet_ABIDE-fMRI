@@ -14,7 +14,11 @@ Les données utilisées proviennent du dataset **[ABIDE – Autism Brain Imaging
 
 ## 2. Pourquoi ce projet ?
 
-Eva Villeneuve (**[GitHub](https://github.com/psy3019-6973-2026/Villeneuve_Projet_mi-session/tree/main)**) et moi-même avons choisi ce projet car
+Eva Villeneuve (**[GitHub](https://github.com/psy3019-6973-2026/Villeneuve_Projet_mi-session/tree/main)**) et moi-même avons choisi ce projet car il combine neurosciences cognitives et apprentissage automatique, autour d’un sujet qui nous intéresse particulièrement : le trouble du spectre de l’autisme.
+
+Le dataset ABIDE est multi-site et largement utilisé, ce qui en fait un bon point de départ pour étudier des questions concrètes comme la validation croisée, la généralisation des modèles et l’impact des effets de site.
+
+Enfin, le projet initial était déjà bien structuré, mais il laissait suffisamment de place pour approfondir certains aspects méthodologiques et proposer des analyses complémentaires.
 
 ## 3. Présentation des tâches :
 
