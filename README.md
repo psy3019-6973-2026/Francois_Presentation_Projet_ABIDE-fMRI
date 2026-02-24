@@ -3,7 +3,8 @@ Présentation des taches pour le projet ABIDE-fMRI
 
 ## Présentation du projet initial :
 
-**Projet initial** : *Using fMRI Data to Predict Autism Diagnoses with Machine Learning*: https://github.com/brainhack-school2020/abide-fmri/blob/master/README.md
+**Projet initial** :  
+**[*Using fMRI Data to Predict Autism Diagnoses with Machine Learning*](https://github.com/brainhack-school2020/abide-fmri)**
 
 **Présentation du projet** :  
 Le projet initialement réalisé par Emily Chen, Andréanne Proulx et Mikkel Schöttner a pour objectif de comparer plusieurs modèles d’apprentissage automatique ainsi que différentes stratégies de validation croisée afin d’évaluer leur capacité à distinguer des individus présentant un trouble du spectre autistique (Autism Spectrum Disorder, ASD) de contrôles typiques (Typically Developed, TD), à partir de données de connectivité cérébrale issues de l’analyse de l’IRM fonctionnelle au repos.
