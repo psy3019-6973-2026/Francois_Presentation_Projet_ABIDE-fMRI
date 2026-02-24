@@ -1,5 +1,5 @@
 # Francois_Presentation_Projet_ABIDE-fMRI
-Présentation des taches pour le projet ABIDE-fMRI
+Présentation des tâches pour le projet ABIDE-fMRI
 
 ## 1. Présentation du projet initial :
 
