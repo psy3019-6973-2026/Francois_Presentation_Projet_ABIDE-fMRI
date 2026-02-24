@@ -16,3 +16,16 @@ Les données utilisées proviennent du dataset **[ABIDE – Autism Brain Imaging
 
 Eva Villeneuve (**[GitHub](https://github.com/psy3019-6973-2026/Villeneuve_Projet_mi-session/tree/main)**) et moi-même avons choisi ce projet car
 
+## 3. Présentation des tâches :
+
+### Tâche 1 — Comparaison des stratégies de validation croisée
+
+**Description de la tâche** :  
+Cette tâche vise à comparer plusieurs stratégies de validation croisée (*StratifiedKFold*, *GroupKFold* par site et *Leave-One-Site-Out*) afin de voir comment le choix de la validation influence la performance des modèles de classification ASD vs TD.  
+Le modèle et ses paramètres restent inchangés, ce qui permet d’observer uniquement l’effet du choix de la validation croisée sur les performances.
+
+**Lien avec le projet initial** :  
+Le projet ABIDE-fMRI de départ teste déjà différentes approches de validation croisée. Cette tâche permet d’aller plus loin en comparant ces stratégies de manière plus structurée, afin de mieux comprendre leur impact sur les résultats.
+
+**Pourquoi c’est pertinent** :  
+Les données ABIDE proviennent de plusieurs sites d’acquisition. Si l’on ne tient pas compte de cette structure, les performances peuvent sembler meilleures qu’elles ne le sont réellement. En comparant des stratégies qui prennent en compte les sites, cette tâche permet d’évaluer plus correctement la robustesse et la capacité de généralisation des modèles.
