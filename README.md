@@ -145,10 +145,13 @@ Les stratégies de validation croisée tenant compte des sites, comme *GroupKFol
 
 **Objectif de la tâche** :  
 L’objectif de cette tâche est d’évaluer l’impact des effets de site sur les performances du modèle en comparant une analyse multi-site à une analyse réalisée sur un seul site d’acquisition.
-Le site utilisé pour l’analyse mono-site sera choisi après l’analyse LOSO de la tâche 1. Il sera choisie selon sa performance LOSO (légèrement inférieure à la moyenne des autres sites, ce qui en fait un cas intéressant pour examiner l’impact potentiel des effets de site sur la généralisation du modèle) et selon sa taille d’échantillon (n superieur a ?)
+Le site utilisé pour l’analyse mono-site sera choisi après l’analyse LOSO de la tâche 1. Il sera choisie selon :
+- sa performance LOSO : légèrement inférieure à la moyenne des autres sites, ce qui en fait un cas intéressant pour examiner l’impact potentiel des effets de site sur la généralisation du modèle
+- sa taille d’échantillon : suffisamment grande pour permettre une évaluation stable, avec au moins 50 sujets au total et au moins 20 sujets par classe (ASD et TD), afin d’éviter qu’un site trop petit rende les résultats trop bruités
 
 **Description de la tâche** :  
-Dans la continuité de la premiere tache, celle-ci consiste à refaire l’analyse en utilisant uniquement les données provenant d’un seul site d’acquisition, le site NYU. Le même pipeline de classification est appliqué afin d’entraîner et d’évaluer le modèle sur ce sous-ensemble de données. Les performances obtenues sont ensuite comparées à celles de l’analyse réalisée sur l’ensemble des sites.
+Dans la continuité de la tâche 1, cette analyse consiste à appliquer le même pipeline de classification sur un sous-ensemble mono-site, sélectionné à partir des résultats LOSO. Le modèle est entraîné et évalué uniquement sur les données provenant de ce site, en utilisant une validation croisée adaptée au contexte mono-site.
+Les performances obtenues (moyennes et variabilité entre folds) sont ensuite comparées à celles de l’analyse multi-site, afin d’examiner l’impact de l’hétérogénéité inter-sites sur la performance et la stabilité du modèle.
 
 **Lien avec le projet initial** :  
 Le projet ABIDE-fMRI utilise des données collectées dans plusieurs sites différents. Cette tâche permet de s’appuyer sur cette structure multi-site pour examiner plus concrètement l’effet des différences entre sites sur les résultats.
