@@ -7,16 +7,33 @@ Présentation des tâches pour le projet ABIDE-fMRI
 **[*Using fMRI Data to Predict Autism Diagnoses with Machine Learning*](https://github.com/brainhack-school2020/abide-fmri)**
 
 **Présentation du projet** :  
-Le projet initialement réalisé par Emily Chen, Andréanne Proulx et Mikkel Schöttner s’inscrit dans un contexte de recherche en neurosciences computationnelles visant à explorer le potentiel de l’imagerie cérébrale fonctionnelle pour la classification de troubles neurodéveloppementaux. Dans ce projet de Machine Leerning supervisé sont utiliser afin de classer les participants présentant un trouble du spectre de l’autisme (TSA) de contrôles typiques (TD), à partir de données d’IRM fonctionnelle au repos et de mesures de connectivité cérébrale.
+Le projet initialement réalisé par Emily Chen, Andréanne Proulx et Mikkel Schöttner visent à explorer le potentiel de l’imagerie cérébrale fonctionnelle pour la classification de trouble du spectre de l’autisme (TSA). Dans ce projet de Machine Leerning supervisé est utiliser afin de classer les participants présentant un trouble du spectre de l’autisme (TSA) de contrôles typiques (TD), à partir de données d’IRM fonctionnelle au repos et de mesures de connectivité cérébrale.
 
 **Présentation des données** :  
 Les données utilisées proviennent du dataset **[ABIDE – Autism Brain Imaging Data Exchange](https://fcon_1000.projects.nitrc.org/indi/abide/)**, une base de données ouverte regroupant des données d’IRM fonctionnelle au repos prétraitées, incluant plusieurs centaines de sujets ASD et TD provenant de plus de 20 sites de recherche internationaux.
 
 **Présentation de la méthode** :
-Le projet repose sur l’extraction de matrices de connectivité fonctionnelle à partir de données d’IRMf au repos. Ces matrices servent ensuite de variables d’entrée pour différents modèles de machine learning (par exemple des classifieurs linéaires ou à marge maximale).
-Une attention particulière est portée à l’évaluation des performances des modèles, notamment à travers l’utilisation de plusieurs stratégies de validation croisée. Le projet explore ainsi comment le choix du modèle et du schéma de validation influence la capacité de classification ASD vs TD.
+Le projet repose sur l’extraction de matrices de connectivité fonctionnelle à partir de données d’IRMf au repos. Ces matrices servent ensuite de variables d’entrée pour différents modèles de machine learning.
+On met en lumière la façon dont on évalue les performances des modèles, notamment à l’aide de différentes méthodes de validation croisée. Le but est de comprendre en quoi le choix du modèle et de la stratégie de validation peut influencer la capacité à distinguer les participants ASD des contrôles typiques.
 
 **Présentation des résultats**
+
+Leave-one-out cross-validation a donné les meilleurs scores d’exactitude parmi les méthodes testées.
+Les valeurs d’exactitude (accuracy) obtenues avec différents modèles étaient généralement entre ~56 % et ~69 % (donc modérées, sans très hautes performances).
+En validation group k-fold, les résultats moyens par modèle étaient :
+  - Linear SVM ≈ 63.5 %
+  - K-nearest neighbors ≈ 55.2 %
+  - Arbres de décision ≈ 54.3 %
+  - Random forest ≈ 52.6 %
+Le SVM linéaire était le plus précis, mais même lui restait loin d’une classification très robuste.
+
+**Interpretation des résultats**
+
+Les résultats montrent que la capacité à prédire ASD vs TD d’après les données fMRI au repos reste limitée, probablement parce que les données proviennent de plusieurs sites avec des profils différents (scanners, âges, méthodes) et que la variabilité inter-sites rend la classification plus difficile.
+
+Les performances observées sont supérieures au hasard (≈50 %) mais loin de « fortes » prédictions (pas de très hautes précisions).
+
+Les différences de méthodes de validation ont une influence sur les scores, la validation croisée stricte (leave-one-out) offrant une meilleure estimation des performances qu’une simple k-fold.
 
 ## 2. Pourquoi ce projet ?
 
