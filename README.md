@@ -122,6 +122,7 @@ Le but est de tester la capacité du modèle à généraliser à un site non vu 
 Je vais donc mesurer ici : généralisation d'un site à un autre
 
 3. Leave-One-Site-Out (LOSO)
+
 Ici, j'enlève entièrement un site, j'entraîne sur tous les autres et je teste sur le site exclu.
 
 Et je répètes ca pour chaque site.
