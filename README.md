@@ -69,7 +69,7 @@ Résultats : deux sujets identiques biologiquement mais venant de deux sites dif
 
 **Description de la tâche** :  
 
-La validation croisée permet de comprendre les différences de sites.
+La validation croisée permet d’évaluer si les performances du modèle reposent sur des caractéristiques biologiques liées au diagnostic ou sur des caractéristiques spécifiques aux sites d’acquisition.
 - Avec la StratifiedKFold, je peux répondre à la question : Est-ce que je reconnais des données similaires ?
 - Avec le GroupKFold, je peux répondre à la question : Est-ce que je généralise à un autre site ?
 - Avec le LOSO, je peux répondre à la question : À quel point chaque site est différent des autres ?
@@ -101,24 +101,27 @@ Seule chose qui change : la stratégie de validation croisée.
 
 Je vais tester trois CV :
 1. StratifiedKFold
-Je mélange tous les sujets en m'assurant un équilibre entre ASD et TD.
+
+Les sujets sont répartis aléatoirement en conservant l’équilibre ASD/TD dans chaque fold, sans tenir compte des sites.
+
 Le modèle voit :
 - des données du même scanner
 - des artefacts similaires
 - des signatures de site répétées
 
 Le modèle va apprendre des caractéristiques propres au site et les retrouver au test.
-Donc les performance seront élevée, mais trompeuse.
+Si des effets de site sont présents, la StratifiedKFold peut conduire à une surestimation des performances car les données d’entraînement et de test partagent des signatures de site similaires.
 Le but ici étant de mesurer la reconnaissance des données similaires à celle déjà vues.
 
 2. GroupKFold (group = site)
+
 Ici un groupe est égal à un site ce qui oblige le modèle a ne pas utiliser la signature du scanner, il doit apprendre des motifs communs entre sites.
 
 Je devrais observer :
 - Une baisse de performence 
 - La variance entre folds qui augmente
 
-Le but ici est de voir à quel point les sites diffèrent.
+Le but est de tester la capacité du modèle à généraliser à un site non vu pendant l'entraînement.
 Je vais donc mesurer ici : généralisation d'un site à un autre
 
 3. Leave-One-Site-Out (LOSO)
