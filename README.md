@@ -70,9 +70,6 @@ Résultats : deux sujets identiques biologiquement mais venant de deux sites dif
 **Description de la tâche** :  
 
 La validation croisée permet d’évaluer si les performances du modèle reposent sur des caractéristiques biologiques liées au diagnostic ou sur des caractéristiques spécifiques aux sites d’acquisition.
-- Avec la StratifiedKFold, je peux répondre à la question : Est-ce que je reconnais des données similaires ?
-- Avec le GroupKFold, je peux répondre à la question : Est-ce que je généralise à un autre site ?
-- Avec le LOSO, je peux répondre à la question : À quel point chaque site est différent des autres ?
 
 Protocole :
 1) Préparer les données (mêmes données pour toutes les CV)
@@ -130,6 +127,12 @@ Ici, j'enlève entièrement un site, j'entraîne sur tous les autres et je teste
 Et je répètes ca pour chaque site.
 
 Ainsi je montre pour chaque site la performance différente.
+
+Ces trois stratégies permettent d’évaluer différents niveaux de généralisation du modèle :
+- StratifiedKFold : le modèle est évalué sur des données statistiquement similaires à celles vues à l’entraînement, ce qui permet de mesurer sa capacité à reconnaître des données proches.
+- GroupKFold : le modèle est contraint de généraliser à des sites non vus pendant l’entraînement, fournissant une estimation plus réaliste de la généralisation inter-site.
+- Leave-One-Site-Out (LOSO) : le modèle est évalué successivement sur chaque site exclu, ce qui permet d’examiner l’hétérogénéité des performances entre sites et d’identifier d’éventuels sites pour lesquels la généralisation est plus difficile.
+
 
 **Lien avec le projet initial** :  
 Le projet ABIDE-fMRI de départ explore déjà différentes approches de validation croisée. Cette tâche s’inscrit dans sa continuité en proposant une comparaison plus structurée de ces stratégies, dans le but de mieux comprendre leur impact sur les résultats.
