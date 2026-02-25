@@ -53,13 +53,80 @@ Enfin, le projet initial était déjà bien structuré, mais il laissait suffisa
 
 ## 3. Présentation des tâches :
 
-### Tâche 1 : Comparaison des stratégies de validation croisée
+### Tâche 1 : Comparaison des stratégies de validation croisée selon les sites d'aquisition
 
 **Objectif de la tâche** :  
-L’objectif de cette tâche est d’évaluer dans quelle mesure le choix de la stratégie de validation croisée influence les performances des modèles de classification ASD vs TD dans le contexte d’un dataset multi-site comme ABIDE.
+
+L’objectif de cette tâche est de comprendre comment le choix de la stratégie de validation croisée influence les performances d’un modèle de classification ASD vs TD, lorsque les données proviennent de plusieurs sites d’acquisition.
+
+On cherche en effet à répondre à la problematique : Est-ce que les performances observées reflètent réellement une capacité à classer les participants présentant un trouble du spectre de l’autisme (TSA) de contrôles typiques (TD), ou bien sont-elles en partie dues aux différences entre les sites d’acquisition ?
+
+En effet, chaque site utilise :
+- un scanner différent (constructeur, champ magnétique, bobines),
+- des paramètres d’acquisition propres (TR, résolution, durée),
+- parfois une population différente (âge, sévérité clinique, critères de recrutement).
+Résultats : deux sujets identiques biologiquement mais venant de deux sites différents peuvent avoir des signaux IRMf différents.
 
 **Description de la tâche** :  
-Pour cela, plusieurs stratégies de validation croisée sont comparées : *StratifiedKFold*, *GroupKFold* en utilisant le site d’acquisition comme variable de groupe, et *Leave-One-Site-Out*. Afin de garantir une comparaison équitable, le modèle, ses paramètres et les métriques d’évaluation sont conservés identiques, seule la stratégie de validation croisée est modifiée. Cette approche permet d’isoler l’effet du schéma de validation sur les performances observées.
+
+La validation croisée permet de comprendre les différences de sites.
+- Avec la StratifiedKFold, je peux répondre à la question : Est-ce que je reconnais des données similaires ?
+- Avec le GroupKFold, je peux répondre à la question : Est-ce que je généralise à un autre site ?
+- Avec le LOSO, je peux répondre à la question : À quel point chaque site est différent des autres ?
+
+Protocole :
+1) Préparer les données (mêmes données pour toutes les CV)
+- Charger les features (ex. matrice de connectivité / vecteurs de features) : X
+- Charger les labels diagnostiques : y (ASD=1, TD=0 par ex.)
+- Récupérer l’identifiant du site pour chaque sujet : site (variable de groupe)
+
+Sorties attendues :
+- X : matrice sujets × features
+- y : vecteur (n_sujets)
+- site : vecteur (n_sujets) indiquant le site d’acquisition
+
+2) Fixer le cadre expérimental (pour une comparaison équitable)
+
+Pour que la comparaison soit valide, on fige :
+- le même pipeline de preprocessing (ex. standardisation),
+- le même modèle (ex. Logistic Regression / SVM),
+- les mêmes hyperparamètres,
+- les mêmes métriques,
+- le même nombre de folds quand c’est applicable,
+- un random_state fixe (si la méthode utilise un shuffle).
+
+Seule chose qui change : la stratégie de validation croisée.
+
+3) Définir les stratégies de validation croisée à comparer
+
+Je vais tester trois CV :
+1. StratifiedKFold
+Je mélange tous les sujets en m'assurant un équilibre entre ASD et TD.
+Le modèle voit :
+- des données du même scanner
+- des artefacts similaires
+- des signatures de site répétées
+
+Le modèle va apprendre des caractéristiques propres au site et les retrouver au test.
+Donc les performance seront élevée, mais trompeuse.
+Le but ici étant de mesurer la reconnaissance des données similaires à celle déjà vues.
+
+2. GroupKFold (group = site)
+Ici un groupe est égal à un site ce qui oblige le modèle a ne pas utiliser la signature du scanner, il doit apprendre des motifs communs entre sites.
+
+Je devrais observer :
+- Une baisse de performence 
+- La variance entre folds qui augmente
+
+Le but ici est de voir à quel point les sites diffèrent.
+Je vais donc mesurer ici : généralisation d'un site à un autre
+
+3. Leave-One-Site-Out (LOSO)
+Ici, j'enlève entièrement un site, j'entraîne sur tous les autres et je teste sur le site exclu.
+
+Et je répètes ca pour chaque site.
+
+Ainsi je montre pour chaque site la performance différente.
 
 **Lien avec le projet initial** :  
 Le projet ABIDE-fMRI de départ explore déjà différentes approches de validation croisée. Cette tâche s’inscrit dans sa continuité en proposant une comparaison plus structurée de ces stratégies, dans le but de mieux comprendre leur impact sur les résultats.
