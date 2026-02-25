@@ -168,13 +168,44 @@ En se concentrant sur un seul site, on réduit les différences liées aux scann
 ### Tâche 3 : Visualisations et interprétation des résultats 
 
 **Objectif de la tâche** :  
-L’objectif de cette tâche est de faciliter l’interprétation des résultats obtenus lors des analyses précédentes, en allant au-delà des scores de performance bruts et en évaluant la stabilité et la robustesse des modèles.
+L’objectif de cette tâche est de faciliter l’interprétation des résultats obtenus dans les tâches 1 et 2, en allant au-delà des scores globaux de performance.
+Il s’agit d’évaluer visuellement :
+- la stabilité des modèles selon la stratégie de validation croisée,
+- l’hétérogénéité des performances entre sites,
+- et l’impact de l’effet de site sur la capacité de généralisation
 
 **Description de la tâche** :  
-Cette tâche consiste à produire des visualisations à partir des résultats obtenus lors des analyses précédentes. Cela inclut notamment des heatmaps de connectivité moyenne pour les groupes ASD et TD, des courbes d’apprentissage, ainsi que des graphiques montrant la distribution des scores selon les folds de validation croisée.
+Cette tâche consiste à produire des visualisations directement issues des analyses précédentes.
+Les figures principales seront :
+
+1. Distribution des scores selon la stratégie de validation croisée (Boxplots)
+- Axe x : stratégie de validation croisée (StratifiedKFold, GroupKFold, LOSO)
+- Axe y : score de performance (ex. AUC ou accuracy)
+- Chaque point représente un fold ou un site (dans le cas du LOSO)
+
+Cette visualisation permet d’évaluer :
+- la stabilité des performances,
+- la variance entre folds,
+- et une éventuelle surestimation des performances lorsque les effets de site ne sont pas contrôlés.
+
+2. Performance par site (LOSO) Barplot avec ligne horizontale représentant la moyenne)
+- Axe x : sites d’acquisition
+- Axe y : score obtenu lorsque le site est laissé de côté (LOSO)
+- Ligne horizontale : moyenne globale des performances inter-site
+
+Cette figure permet de :
+- visualiser l’hétérogénéité inter-sites,
+- identifier les sites “difficiles” ou proches du hasard,
+
 
 **Lien avec le projet initial** :  
-Le projet ABIDE-fMRI propose déjà plusieurs analyses quantitatives. Cette tâche permet de compléter ces résultats en les rendant plus lisibles et interprétables grâce à des visualisations, tout en s’appuyant sur les sorties des modèles existants.
+Le projet ABIDE-IRMf propose principalement des évaluations quantitatives globales des modèles.
+Cette tâche enrichit l’analyse en ajoutant une dimension visuelle permettant d’examiner plus finement la stabilité des performances et l’impact des effets de site, qui ne sont pas explicitement explorés dans le projet initial.
 
 **Pourquoi c’est pertinent** :  
-Les visualisations permettent de mieux comprendre comment les modèles se comportent, au-delà d’un simple score de performance. Elles aident à évaluer la stabilité des résultats selon les folds de validation croisée, à repérer d’éventuelles différences globales entre les groupes ASD et TD, et à interpréter plus facilement la robustesse des modèles.
+Les effets de site constituent un enjeu majeur dans les bases de données multi-sites comme ABIDE.
+
+Les visualisations permettent :
+- de détecter une surestimation potentielle des performances,
+- d’illustrer la variabilité inter-site
+
