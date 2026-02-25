@@ -31,6 +31,7 @@ En validation group k-fold, les résultats moyens par modèle étaient :
   - K-nearest neighbors ≈ 55.2 %
   - Arbres de décision ≈ 54.3 %
   - Random forest ≈ 52.6 %
+
 Le SVM linéaire était le plus précis, mais même lui restait loin d’une classification très robuste.
 
 ### Interpretation des résultats:
