@@ -53,6 +53,11 @@ Enfin, le projet initial était déjà bien structuré, mais il laissait suffisa
 
 ## 3. Présentation des tâches :
 
+J'ai choisie 3 tâches selon un fils conducteur: 
+- Tâche 1 → où est le problème ?
+- Tâche 2 → que se passe-t-il dans un cas précis ?
+- Tâche 3 → comment interpréter proprement ce qu’on observe ?
+
 ### Tâche 1 : Comparaison des stratégies de validation croisée selon les sites d'aquisition
 
 **Objectif de la tâche** :  
