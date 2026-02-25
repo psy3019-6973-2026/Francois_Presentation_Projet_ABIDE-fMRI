@@ -11,8 +11,8 @@ Le projet initialement réalisé par Emily Chen, Andréanne Proulx et Mikkel Sch
 
 **Présentation des données** :  
 Les données utilisées proviennent du dataset **[ABIDE – Autism Brain Imaging Data Exchange](https://fcon_1000.projects.nitrc.org/indi/abide/)**, une base de données ouverte regroupant des données d’IRMf au repos prétraitées. Le ABIDE I contient 1112 jeux de données au total, composés de :
-    - 539 participants avec un diagnostic de TSA
-    - 573 participants contrôles typiques (TD)
+- 539 participants avec un diagnostic de TSA
+- 573 participants contrôles typiques (TD)
 
 plusieurs centaines de sujets ASD et TD provenant de plus de 20 sites de recherche internationaux.
 
