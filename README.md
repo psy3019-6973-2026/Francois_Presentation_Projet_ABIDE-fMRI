@@ -194,7 +194,7 @@ Il s’agit d’évaluer visuellement :
 Cette tâche consiste à produire des visualisations directement issues des analyses précédentes.
 Les figures principales seront :
 
-1. Distribution des scores selon la stratégie de validation croisée (Boxplots)
+1. Distribution des scores selon la stratégie de validation croisée (Violon plots)
 - Axe x : stratégie de validation croisée (StratifiedKFold, GroupKFold, LOSO)
 - Axe y : score de performance (ex. AUC ou accuracy)
 - Chaque point représente un fold ou un site (dans le cas du LOSO)
