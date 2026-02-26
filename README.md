@@ -25,8 +25,6 @@ Les performances des modèles ont été évaluer notamment à l’aide de diffé
 
 ### Présentation des résultats:
 
-Leave-one-out cross-validation a donné les meilleurs scores d’exactitude parmi les méthodes testées.
-
 En validation group k-fold, les résultats moyens par modèle étaient :
   - Linear SVM ≈ 63.5 %
   - K-nearest neighbors ≈ 55.2 %
@@ -37,11 +35,10 @@ Le SVM linéaire était le plus précis, mais même lui restait loin d’une cla
 
 ### Interpretation des résultats:
 
-Les résultats montrent que la capacité à prédire ASD vs TD d’après les données IRMf au repos reste limitée, probablement parce que les données proviennent de plusieurs sites avec des profils différents (scanners, âges, méthodes) et que la variabilité inter-sites rend la classification plus difficile.
-
 **Les performances de classification observées sont supérieures au hasard (≈50 %) mais loin d'être robuste (pas de très hautes précisions).**
 
-Les différences de méthodes de validation ont une influence sur les scores, la validation croisée stricte (leave-one-out) offrant une meilleure estimation des performances qu’une simple k-fold.
+Les résultats montrent que la capacité à prédire ASD vs TD d’après les données IRMf au repos reste limitée, probablement parce que les données proviennent de plusieurs sites avec des profils différents (scanners, âges, méthodes) et que la variabilité inter-sites rend la classification plus difficile.
+
 
 ## 2. Pourquoi ce projet ?
 
