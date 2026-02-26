@@ -70,7 +70,8 @@ En effet, chaque site utilise :
 - un scanner différent (constructeur, champ magnétique, bobines),
 - des paramètres d’acquisition propres (TR, résolution, durée),
 - parfois une population différente (âge, sévérité clinique, critères de recrutement).
-Résultats : deux sujets identiques biologiquement mais venant de deux sites différents peuvent avoir des signaux IRMf différents.
+
+Résultats : deux sujets identiques biologiquement mais venant de deux sites différents peuvent donc être classés différemment par le modèle
 
 **Description de la tâche** :  
 
@@ -112,27 +113,40 @@ Le modèle voit :
 - des signatures de site répétées
 
 Le modèle va apprendre des caractéristiques propres au site et les retrouver au test.
-Si des effets de site sont présents, la StratifiedKFold peut conduire à une surestimation des performances car les données d’entraînement et de test partagent des signatures de site similaires.
-Le but ici étant de mesurer la reconnaissance des données similaires à celle déjà vues.
+
+Si des effets de site sont présents, la StratifiedKFold va  surestimer des performances (car les données d’entraînement et les données test partagent des signatures de site similaires)
+
+Le but ici est d’évaluer la performance du modèle dans un contexte où les données d’entraînement et de test proviennent des mêmes sites, ce qui peut conduire à une surestimation des performances.
 
 2. GroupKFold (group = site)
 
-Ici un groupe est égal à un site ce qui oblige le modèle a ne pas utiliser la signature du scanner, il doit apprendre des motifs communs entre sites.
+Ici, chaque groupe correspond à un site d’acquisition.
+Donc quand on sépare les données, on s’assure qu’un site entier est laissé de côté pour le test.
+
+Concrètement, ça oblige le modèle à ne pas s’appuyer sur la signature du scanner.
+Il doit apprendre des motifs communs à tous les sites, donc quelque chose de plus robust
 
 Je devrais observer :
 - Une baisse de performence 
 - La variance entre folds qui augmente
 
-Le but est de tester la capacité du modèle à généraliser à un site non vu pendant l'entraînement.
+L’objectif ici, c’est de tester la capacité du modèle à généraliser à un site complètement nouveau.
+
 Je vais donc mesurer ici : généralisation d'un site à un autre
 
 3. Leave-One-Site-Out (LOSO)
 
-Ici, j'enlève entièrement un site, j'entraîne sur tous les autres et je teste sur le site exclu.
+Ici, le principe est très simple :
+je retire complètement un site du dataset.
 
-Et je répètes ca pour chaque site.
+J’entraîne le modèle sur tous les autres sites, puis je teste uniquement sur le site que j’ai exclu.
 
-Ainsi je montre pour chaque site la performance différente.
+Ensuite, je répète exactement la même chose pour chaque site.
+
+Donc au final, j’obtiens une performance spécifique pour chaque site.
+
+Ce que ça me permet de voir, ce n’est pas seulement la performance moyenne, mais aussi si certains sites généralisent bien et si d’autres posent problème.
+
 
 Ces trois stratégies permettent d’évaluer différents niveaux de généralisation du modèle :
 - StratifiedKFold : le modèle est évalué sur des données statistiquement similaires à celles vues à l’entraînement, ce qui permet de mesurer sa capacité à reconnaître des données proches.
