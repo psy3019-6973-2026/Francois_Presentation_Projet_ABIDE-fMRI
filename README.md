@@ -102,7 +102,7 @@ Seule chose qui change : la stratégie de validation croisée.
 
 3) Définir les stratégies de validation croisée à comparer
 
-Je vais tester trois CV :
+Je vais tester trois validation croisée :
 1. StratifiedKFold
 
 Les sujets sont répartis aléatoirement en conservant l’équilibre ASD/TD dans chaque fold, sans tenir compte des sites.
