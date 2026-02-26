@@ -39,7 +39,7 @@ Le SVM linéaire était le plus précis, mais même lui restait loin d’une cla
 
 Les résultats montrent que la capacité à prédire ASD vs TD d’après les données IRMf au repos reste limitée, probablement parce que les données proviennent de plusieurs sites avec des profils différents (scanners, âges, méthodes) et que la variabilité inter-sites rend la classification plus difficile.
 
-Les performances observées sont supérieures au hasard (≈50 %) mais loin de « fortes » prédictions (pas de très hautes précisions).
+**Les performances de classification observées sont supérieures au hasard (≈50 %) mais loin d'être robuste (pas de très hautes précisions).**
 
 Les différences de méthodes de validation ont une influence sur les scores, la validation croisée stricte (leave-one-out) offrant une meilleure estimation des performances qu’une simple k-fold.
 
