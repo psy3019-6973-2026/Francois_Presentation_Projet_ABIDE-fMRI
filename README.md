@@ -50,7 +50,7 @@ Enfin, le projet initial était déjà bien structuré, mais il laissait suffisa
 ## 3. Présentation des tâches :
 
 J'ai choisi 3 tâches selon un fil conducteur selon leur limite : et si la classification n'est pas robuste a cause d'un effet de site ? : 
-- Tâche 1 → où est le problème ?
+- Tâche 1 → y a t'il un effet de site  ?
 - Tâche 2 → que se passe-t-il dans un sous-échantillon ?
 - Tâche 3 → comment interpréter proprement ce qu’on observe ?
 
