@@ -114,7 +114,7 @@ Le modèle voit :
 
 Le modèle va apprendre des caractéristiques propres au site et les retrouver au test.
 
-Si des effets de site sont présents, la StratifiedKFold va  surestimer des performances (car les données d’entraînement et les données test partagent des signatures de site similaires)
+**Si des effets de site sont présents, la StratifiedKFold va  surestimer des performances (car les données d’entraînement et les données test partagent des signatures de site similaires)**
 
 Le but ici est d’évaluer la performance du modèle dans un contexte où les données d’entraînement et de test proviennent des mêmes sites, ce qui peut conduire à une surestimation des performances.
 
@@ -127,10 +127,11 @@ Concrètement, ça oblige le modèle à ne pas s’appuyer sur la signature du s
 Il doit apprendre des motifs communs à tous les sites, donc quelque chose de plus robust
 
 Je devrais observer :
-- Une baisse de performence 
+- **Une baisse de performence (car le modele est pas preparer a voir de nouveau site)**
 - La variance entre folds qui augmente
 
-L’objectif ici, c’est de tester la capacité du modèle à généraliser à un site complètement nouveau.
+**L’objectif ici, c’est de tester la capacité du modèle à généraliser à un site complètement nouveau.
+Donc la en comparant ce test avec celui d'avant je vais pourvoir voir l'importance de l'effet de site.**
 
 Je vais donc mesurer ici : généralisation d'un site à un autre
 
