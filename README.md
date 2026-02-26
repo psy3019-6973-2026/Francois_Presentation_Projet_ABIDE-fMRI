@@ -37,7 +37,7 @@ Le SVM linéaire était le plus précis, mais même lui restait loin d’une cla
 
 ### Interpretation des résultats:
 
-Les résultats montrent que la capacité à prédire ASD vs TD d’après les données fMRI au repos reste limitée, probablement parce que les données proviennent de plusieurs sites avec des profils différents (scanners, âges, méthodes) et que la variabilité inter-sites rend la classification plus difficile.
+Les résultats montrent que la capacité à prédire ASD vs TD d’après les données IRMf au repos reste limitée, probablement parce que les données proviennent de plusieurs sites avec des profils différents (scanners, âges, méthodes) et que la variabilité inter-sites rend la classification plus difficile.
 
 Les performances observées sont supérieures au hasard (≈50 %) mais loin de « fortes » prédictions (pas de très hautes précisions).
 
@@ -141,7 +141,7 @@ Ces trois stratégies permettent d’évaluer différents niveaux de généralis
 
 
 **Lien avec le projet initial** :  
-Le projet ABIDE-fMRI de départ explore déjà différentes approches de validation croisée. Cette tâche s’inscrit dans sa continuité en proposant une comparaison plus structurée de ces stratégies, dans le but de mieux comprendre leur impact sur les résultats.
+Le projet ABIDE-IRMf de départ explore déjà différentes approches de validation croisée. Cette tâche s’inscrit dans sa continuité en proposant une comparaison plus structurée de ces stratégies, dans le but de mieux comprendre leur impact sur les résultats.
 
 **Pourquoi c’est pertinent** :  
 ABIDE regroupe des données provenant de plusieurs sites d’acquisition, ce qui introduit des différences liées aux scanners, aux protocoles et aux populations étudiées. Lorsque des données issues d’un même site sont présentes à la fois dans les ensembles d’entraînement et de test, le modèle peut exploiter des caractéristiques spécifiques au site, ce qui peut conduire à une surestimation des performances.  
@@ -160,7 +160,7 @@ Dans la continuité de la tâche 1, cette analyse consiste à appliquer le même
 Les performances obtenues (moyennes et variabilité entre folds) sont ensuite comparées à celles de l’analyse multi-site, afin d’examiner l’impact de l’hétérogénéité inter-sites sur la performance et la stabilité du modèle.
 
 **Lien avec le projet initial** :  
-Le projet ABIDE-fMRI utilise des données collectées dans plusieurs sites différents. Cette tâche permet de s’appuyer sur cette structure multi-site pour examiner plus concrètement l’effet des différences entre sites sur les résultats.
+Le projet ABIDE-IRMf utilise des données collectées dans plusieurs sites différents. Cette tâche permet de s’appuyer sur cette structure multi-site pour examiner plus concrètement l’effet des différences entre sites sur les résultats.
 
 **Pourquoi c’est pertinent** :  
 En se concentrant sur un seul site, on réduit les différences liées aux scanners et aux protocoles d’acquisition. Si les performances sont meilleures dans ce contexte, cela suggère que les effets de site peuvent compliquer l’entraînement de modèles capables de bien généraliser à l’ensemble des données ABIDE.
