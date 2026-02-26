@@ -55,7 +55,7 @@ Enfin, le projet initial était déjà bien structuré, mais il laissait suffisa
 
 J'ai choisi 3 tâches selon un fil conducteur: 
 - Tâche 1 → où est le problème ?
-- Tâche 2 → que se passe-t-il dans un cas précis ?
+- Tâche 2 → que se passe-t-il dans un sous-échantillon ?
 - Tâche 3 → comment interpréter proprement ce qu’on observe ?
 
 ### Tâche 1 : Comparaison des stratégies de validation croisée selon les sites d'aquisition
