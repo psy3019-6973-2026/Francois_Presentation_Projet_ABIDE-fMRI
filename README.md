@@ -49,7 +49,7 @@ Enfin, le projet initial était déjà bien structuré, mais il laissait suffisa
 
 ## 3. Présentation des tâches :
 
-J'ai choisi 3 tâches selon un fil conducteur: 
+J'ai choisi 3 tâches selon un fil conducteur (répondant à la question pourquoi la classification n'est elle pas robuste) : 
 - Tâche 1 → où est le problème ?
 - Tâche 2 → que se passe-t-il dans un sous-échantillon ?
 - Tâche 3 → comment interpréter proprement ce qu’on observe ?
