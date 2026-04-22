@@ -195,13 +195,11 @@ La distribution des âges est bimodale avec un pic entre 7 et 18 ans (médiane :
 - Score ADOS_TOTAL disponible pour 201/286 participants ASD (médiane : 11.0, étendue : 2–22)
 - 2 sites exclus faute d'effectif suffisant : CALTECH (1 sujet restant) et LEUVEN_1 (1 sujet dans la classe minoritaire)
 
-### Résultats
 ![Comparaison complet vs sous-échantillon](output/description_sous_echantillon.png)
 
-Le sous-échantillon ≤18 ans présente une distribution d'âge uniforme et un bon 
-appariement ASD/TD. La sévérité clinique (ADOS) est modérée et homogène entre sites.
+### Résultats
 
-![Comparaison complet vs sous-échantillon](output/comparaison_complet_vs_sub.png)
+
 
 | Stratégie | Balanced Accuracy | ROC-AUC |
 |---|---|---|
@@ -210,8 +208,13 @@ appariement ASD/TD. La sévérité clinique (ADOS) est modérée et homogène en
 | Intra-site — ≤18 ans | 0.644 | 0.701 |
 | LOSO — ≤18 ans | 0.633 | 0.699 |
 
-Restreindre l'analyse aux participants de moins de 18 ans produit une légère baisse des performances (~2%), 
-ce qui suggère que l'hétérogénéité d'âge n'est pas la principale source de variabilité dans ABIDE.
+
+![Comparaison complet vs sous-échantillon](output/comparaison_complet_vs_sub.png)
+
+Les quatre stratégies restent bien au-dessus du hasard (0.5), et les performances 
+du sous-échantillon sont comparables au dataset complet.
+Restreindre l'analyse aux participants de moins de 18 ans produit une légère baisse 
+des performances (−0.007 en intra-site, −0.028 en LOSO) ce qui suggère que l'hétérogénéité d'âge n'est pas la principale source de variabilité dans ABIDE.
 
 La variabilité inter-site reste présente dans le sous-échantillon :
 - **LEUVEN_1** : balanced accuracy = 1.000, mais seulement 2 sujets en test — résultat non fiable
