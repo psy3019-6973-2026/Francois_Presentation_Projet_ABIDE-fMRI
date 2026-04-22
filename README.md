@@ -226,52 +226,56 @@ La variabilité inter-site reste présente dans le sous-échantillon :
 
 ### Tâche 3 : Visualisations et interprétation des résultats 
 
-> **Note pour la tâche 3** : Les fichiers fMRI bruts (`.nii.gz`) sont 
-> téléchargés automatiquement par `make prepare`. Le téléchargement 
-> complet peut prendre plusieurs heures (~87 Go). Si les fichiers sont 
-> déjà disponibles, placer les dans `data/ABIDE_pcp/cpac/nofilt_noglobal/`.
->
-> 
+ **Note pour la tâche 3** : Les fichiers fMRI bruts (`.nii.gz`) sont 
+téléchargés automatiquement par `make prepare`. Le téléchargement 
+complet peut prendre plusieurs heures (~87 Go). Si les fichiers sont 
+déjà disponibles, placer les dans `data/ABIDE_pcp/cpac/nofilt_noglobal/`.
 
-**Objectif de la tâche** :  
-L’objectif de cette tâche est de faciliter l’interprétation des résultats obtenus dans les tâches 1 et 2, en allant au-delà des scores globaux de performance.
-Il s’agit d’évaluer visuellement :
-- la stabilité des modèles selon la stratégie de validation croisée,
-- l’hétérogénéité des performances entre sites,
-- et l’impact de l’effet de site sur la capacité de généralisation
+### Problème identifié
 
-**Description de la tâche** :  
-Cette tâche consiste à produire des visualisations directement issues des analyses précédentes.
-Les figures principales seront :
+Les tâches 1 et 2 ont montré que les performances varient fortement
+selon les sites, sans que l'âge en soit la cause principale. La tâche 3
+remonte en amont pour examiner si ces effets de site sont **visibles
+directement dans les données fMRI brutes**, avant toute extraction de
+features.
 
-1. Distribution des scores selon la stratégie de validation croisée (Violon plots)
-- Axe x : stratégie de validation croisée (StratifiedKFold, GroupKFold, LOSO)
-- Axe y : score de performance (ex. AUC ou accuracy)
-- Chaque point représente un fold ou un site (dans le cas du LOSO)
+### Objectif
 
-Cette visualisation permet d’évaluer :
-- la stabilité des performances,
-- la variance entre folds,
-- et une éventuelle surestimation des performances lorsque les effets de site ne sont pas contrôlés.
+Produire deux types de visualisations par site :
 
-2. Performance par site (LOSO) Barplot avec ligne horizontale représentant la moyenne)
-- Axe x : sites d’acquisition
-- Axe y : score obtenu lorsque le site est laissé de côté (LOSO)
-- Ligne horizontale : moyenne globale des performances inter-site
+1. **Volume moyen par site** : moyenne voxel par voxel de toutes les
+   images fMRI d'un site. Les différences d'intensité, de champ de vue
+   ou de contraste entre sites sont directement visibles.
+2. **Carte d'écart-type temporel (tSD) par site** : écart-type voxel
+   par voxel sur la série temporelle de chaque sujet, moyenné par site.
+   Les zones à forte variabilité temporelle révèlent des artefacts
+   spécifiques au site.
 
-Cette figure permet de :
-- visualiser l’hétérogénéité inter-sites,
-- identifier les sites “difficiles” ou proches du hasard,
+### Étapes réalisées
+
+- Parsing des fichiers `func_preproc.nii.gz` et mapping vers les noms
+  de sites du phénotype
+- Calcul du volume moyen (`nilearn.image.mean_img`) et de la carte tSD
+  pour chaque site, sujet par sujet pour éviter la saturation mémoire
+- Gestion des images de dimensions différentes par rééchantillonnage
+- Visualisation de tous les sites (coupes axiales)
+- Comparaison ciblée des sites performants (LEUVEN_1, PITT) vs
+  problématiques (OHSU, MAX_MUN) en LOSO
+
+**Avertissement** : Le calcul des cartes (section 3) peut prendre 30 minutes 
+
+### Résultats
+
+![Volume moyen par site](output/volume_moyen_par_site.png)
+
+![Carte tSD par site](output/tSD_par_site.png)
+
+![Comparaison sites performants vs problématiques](output/comparaison_sites_focus.png)
 
 
-**Lien avec le projet initial** :  
-Le projet ABIDE-IRMf propose principalement des évaluations quantitatives globales des modèles.
-Cette tâche enrichit l’analyse en ajoutant une dimension visuelle permettant d’examiner plus finement la stabilité des performances et l’impact des effets de site, qui ne sont pas explicitement explorés dans le projet initial.
 
-**Pourquoi c’est pertinent** :  
-Les effets de site constituent un enjeu majeur dans les bases de données multi-sites comme ABIDE.
 
-Les visualisations permettent :
-- de détecter une surestimation potentielle des performances,
-- d’illustrer la variabilité inter-site
+
+
+
 
