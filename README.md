@@ -47,12 +47,129 @@ Le dataset ABIDE est multi-site et est prétraité ce qui en fait un bon point d
 
 Enfin, le projet initial était déjà bien structuré, mais il laissait suffisamment de place pour approfondir certains aspects méthodologiques et proposer des analyses complémentaires.
 
+## 3. Reproduction :
+
+### 1. Cloner le dépôt
+
+```bash
+git clone https://github.com/evavilleneuve/abide-fmri.git
+cd abide-fmri
+python3 -m venv venv_abide
+source venv_abide/bin/activate
+pip install -r requirements-modern.txt
+mkdir -p data output
+python code/prepare_data.py data output
+```
+
+```bash
+git clone https://github.com/psy3019-6973-2026/Francois_Presentation_Projet_ABIDE-fMRI.git
+cd Francois_Presentation_Projet_ABIDE-fMRI
+```
+
+### 2. Créer et activer l'environnement
+```bash
+conda env create -f environment.yml
+conda activate env_abide
+```
+
+### 3. Préparer les données
+```bash
+make prepare
+```
+Cela télécharge les données ABIDE et calcule les features de connectivité.
+
+## Reproduction complète
+
+Pour reproduire toutes les analyses :
+```bash
+make run
+```
+
+Ou tâche par tâche :
+```bash
+make tache1   # Validation croisée intra-site vs LOSO
+make tache2   # Analyse du sous-échantillon par âge
+make tache3   # Visualisation des effets de site fMRI
+```
+
+## Structure du projet
+
+```
+├── code/                          # Scripts originaux du projet de base
+│   ├── prepare_data.py            # Téléchargement et extraction des features
+│   └── *.ipynb                    # Notebooks originaux
+├── notebook/                      # Contributions — tâches du projet
+│   ├── Tache1_validation_croisee_v2.ipynb
+│   ├── Tache2_sous_echantillon.ipynb
+│   └── Tache3_effets_de_site_fMRI.ipynb
+├── data/                          # Données ABIDE (générées par prepare_data.py)
+├── output/                        # Features extraites (.npz)
+├── Makefile                       # Commandes de reproduction
+├── environment.yml                # Environnement conda
+└── requirements-modern.txt        # Dépendances pip
+```
+
+
 ## 3. Présentation des tâches :
 
 J'ai choisi 3 tâches selon un fil conducteur selon leur limite : et si la classification n'est pas robuste a cause d'un effet de site ? : 
 - Tâche 1 → y a t'il un effet de site  ?
 - Tâche 2 → que se passe-t-il dans un sous-échantillon ?
 - Tâche 3 → comment interpréter proprement ce qu’on observe ?
+
+## Tâche 1 : Comparaison des stratégies de validation croisée selon les sites
+
+### Problème identifié
+
+Dans les bases de données multi-sites comme ABIDE, chaque site utilise
+un scanner différent, des paramètres d'acquisition propres et parfois
+une population différente. Si les données d'entraînement et de test
+proviennent des mêmes sites, le modèle peut apprendre à reconnaître
+la signature du scanner plutôt qu'une vraie signature biologique de
+l'autisme — ce qui conduit à une surestimation des performances.
+
+### Objectif
+
+Comparer deux stratégies de validation croisée pour mesurer dans quelle
+mesure les performances reflètent une vraie capacité de classification
+vs. un artefact de site :
+
+- **5-Fold stratifié par site (intra-site)** : chaque site est représenté
+  proportionnellement dans le train et le test. Le modèle voit les mêmes
+  sites à l'entraînement et au test.
+- **Leave-One-Site-Out (LOSO)** : un site entier est exclu du train et
+  utilisé uniquement pour le test. Répété pour chaque site. Simule le
+  scénario réaliste d'application à un nouveau site inconnu.
+
+### Étapes réalisées
+
+- Chargement des features ABIDE (matrice de connectivité BASC064)
+- Définition d'un pipeline fixe : `StandardScaler → LogisticRegression`
+  (même modèle, mêmes hyperparamètres pour les deux stratégies)
+- Implémentation d'un 5-fold stratifié par site avec gestion des sites
+  à faible effectif
+- Implémentation du LOSO avec `LeaveOneGroupOut`
+- Comparaison des performances (accuracy, balanced accuracy, ROC-AUC)
+- Visualisation : boxplot comparatif + barplot LOSO par site
+
+### Résultats
+
+| Stratégie | Balanced Accuracy | ROC-AUC |
+|-----------|:-----------------:|:-------:|
+| Intra-site (5-fold) | ~0.65 | ~0.70 |
+| LOSO (moyenne) | ~0.59 | ~0.64 |
+
+La chute de performance entre intra-site et LOSO confirme que le modèle
+exploite en partie les effets de site. La variabilité inter-sites est
+importante : LEUVEN_1 et PITT atteignent une balanced accuracy ~0.75,
+tandis qu'OHSU (0.442) et MAX_MUN (0.499) sont au niveau du hasard.
+
+**Figure produite** : `comparaison_cv.png`
+![Comparaison des stratégies de validation croisée](output/comparaison_cv.png)
+
+
+
+
 
 ### Tâche 1 : Comparaison des stratégies de validation croisée selon les sites d'aquisition
 
