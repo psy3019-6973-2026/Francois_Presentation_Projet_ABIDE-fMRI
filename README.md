@@ -145,15 +145,12 @@ vs. un artefact de site :
 
 ### Résultats
 
-| Stratégie | Balanced Accuracy | ROC-AUC |
-|-----------|:-----------------:|:-------:|
-| Intra-site (5-fold) | ~0.65 | ~0.70 |
-| LOSO (moyenne) | ~0.59 | ~0.64 |
+| Stratégie             | Balanced Accuracy | ROC-AUC |
+|-----------------------|-------------------|---------|
+| Intra-site (5-fold)   | 0.651             | 0.703   |
+| LOSO (moy. pondérée)  | 0.661             | 0.718   |
 
-La chute de performance entre intra-site et LOSO confirme que le modèle
-exploite en partie les effets de site. La variabilité inter-sites est
-importante : LEUVEN_1 et PITT atteignent une balanced accuracy ~0.75,
-tandis qu'OHSU (0.442) et MAX_MUN (0.499) sont au niveau du hasard.
+Contrairement à l'hypothèse initiale, les performances LOSO sont légèrement supérieures à l'intra-site, ce qui suggère que le modèle ne dépend pas fortement des effets de site au niveau global. La principale observation est la forte variabilité inter-site : LEUVEN_1 (0.750), LEUVEN_2 (0.740) et PITT (0.737) généralisent bien, tandis que OHSU (0.442), CALTECH (0.450) et MAX_MUN (0.499) sont au niveau du hasard
 
 **Figure produite** : `comparaison_cv.png`
 ![Comparaison des stratégies de validation croisée](output/comparaison_cv.png)
