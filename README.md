@@ -51,15 +51,6 @@ Enfin, le projet initial était déjà bien structuré, mais il laissait suffisa
 
 ### 1. Cloner le dépôt
 
-```bash
-git clone https://github.com/evavilleneuve/abide-fmri.git
-cd abide-fmri
-python3 -m venv venv_abide
-source venv_abide/bin/activate
-pip install -r requirements-modern.txt
-mkdir -p data output
-python code/prepare_data.py data output
-```
 
 ```bash
 git clone https://github.com/psy3019-6973-2026/Francois_Presentation_Projet_ABIDE-fMRI.git
