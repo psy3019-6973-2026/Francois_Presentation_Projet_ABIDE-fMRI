@@ -165,7 +165,10 @@ révèle l'hétérogénéité inter-site : 17 sites sur 20 dépassent le
 niveau du hasard en LOSO, mais MAX_MUN, CALTECH et OHSU restent 
 en dessous de 0.5, indiquant une généralisation nulle pour ces sites.
 
-
+### Discussion
+La légère supériorité du LOSO sur l'intra-site (0.661 vs 0.651) doit être interprétée avec prudence : la validation intra-site a été contrainte à 2 folds effectifs par site en raison du faible effectif de certains sites, ce qui peut avoir sous-estimé les performances intra-site.
+La principale conclusion est la forte hétérogénéité inter-site : 3 sites sur 20 (OHSU, CALTECH, MAX_MUN) obtiennent une balanced accuracy ≤ 0.5 en LOSO, indiquant une généralisation nulle. Ces sites présentent probablement des caractéristiques d'acquisition ou de population non représentées dans les autres sites. À l'inverse, les sites bien généralisés (LEUVEN_1, PITT, SDSU) semblent partager suffisamment de caractéristiques avec le reste du dataset.
+Pour tout déploiement clinique multi-sites, ces résultats suggèrent qu'une validation explicite sur chaque nouveau site est nécessaire avant utilisation.
 
 
 
