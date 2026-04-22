@@ -287,6 +287,13 @@ En se concentrant sur un seul site, on réduit les différences liées aux scann
 
 ### Tâche 3 : Visualisations et interprétation des résultats 
 
+> **Note pour la tâche 3** : Les fichiers fMRI bruts (`.nii.gz`) sont 
+> téléchargés automatiquement par `make prepare`. Le téléchargement 
+> complet peut prendre plusieurs heures (~87 Go). Si les fichiers sont 
+> déjà disponibles, placer les dans `data/ABIDE_pcp/cpac/nofilt_noglobal/`.
+>
+> 
+
 **Objectif de la tâche** :  
 L’objectif de cette tâche est de faciliter l’interprétation des résultats obtenus dans les tâches 1 et 2, en allant au-delà des scores globaux de performance.
 Il s’agit d’évaluer visuellement :
