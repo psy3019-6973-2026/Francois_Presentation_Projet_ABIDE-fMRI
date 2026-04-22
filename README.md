@@ -298,7 +298,8 @@ observé en tâche 1
 Vue orthogonale (sagittale, coronale, axiale) du volume moyen fMRI 
 pour NYU.
 
- Note : La visualisation interactive est fortement inspirée du notebook de cours `psy3019_visualisation.ipynb` (Marie-Eve Picard).
+Note 1 : La visualisation interactive est fortement inspirée du notebook de cours `psy3019_visualisation.ipynb` (Marie-Eve Picard).
 
+Note 2 : Ce projet a été réalisé a l'aide l'IA générative (Claude) 
 
-
+Merci :)
