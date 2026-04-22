@@ -198,6 +198,9 @@ La distribution des âges est bimodale avec un pic entre 7 et 18 ans (médiane :
 ### Résultats
 ![Comparaison complet vs sous-échantillon](output/description_sous_echantillon.png)
 
+Le sous-échantillon ≤18 ans présente une distribution d'âge uniforme et un bon 
+appariement ASD/TD. La sévérité clinique (ADOS) est modérée et homogène entre sites.
+
 ![Comparaison complet vs sous-échantillon](output/comparaison_complet_vs_sub.png)
 
 | Stratégie | Balanced Accuracy | ROC-AUC |
