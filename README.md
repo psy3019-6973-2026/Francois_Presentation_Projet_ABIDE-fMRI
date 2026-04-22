@@ -196,7 +196,24 @@ La distribution des âges est bimodale avec un pic entre 7 et 18 ans (médiane :
 - 2 sites exclus faute d'effectif suffisant : CALTECH (1 sujet restant) et LEUVEN_1 (1 sujet dans la classe minoritaire)
 
 ### Résultats
+![Comparaison complet vs sous-échantillon](output/comparaison_complet_vs_sub.png)
 
+| Stratégie | Balanced Accuracy | ROC-AUC |
+|---|---|---|
+| Intra-site — complet | 0.651 | 0.703 |
+| LOSO — complet | 0.661 | 0.718 |
+| Intra-site — ≤18 ans | 0.644 | 0.701 |
+| LOSO — ≤18 ans | 0.633 | 0.699 |
+
+Restreindre l'analyse aux participants de moins de 18 ans produit une légère baisse des performances (~2%), 
+ce qui suggère que l'hétérogénéité d'âge n'est pas la principale source de variabilité dans ABIDE.
+
+La variabilité inter-site reste présente dans le sous-échantillon :
+- **LEUVEN_1** : balanced accuracy = 1.000, mais seulement 2 sujets en test — résultat non fiable
+- **CALTECH** : 1 seul sujet en test, accuracy = 0.000, ROC-AUC = NaN — non interprétable
+- **OHSU** s'améliore (0.558 vs 0.442 en LOSO complet), suggérant que ses participants adultes 
+  étaient particulièrement difficiles à classer
+- **MAX_MUN** (0.500) et **STANFORD** (0.519) restent proches du hasard
 
 
 ### Tâche 3 : Visualisations et interprétation des résultats 
