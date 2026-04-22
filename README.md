@@ -299,7 +299,7 @@ Vue axiale interactive du volume moyen pour NYU.
 La version HTML complète (`volume_interactif_NYU.html`) permet 
 de naviguer librement dans les coupes.
 
-
+ Note : La visualisation interactive est fortement inspirée du notebook de cours `psy3019_visualisation.ipynb` (Marie-Eve Picard).
 
 
 
