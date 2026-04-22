@@ -294,6 +294,17 @@ particulièrement intenses, suggestifs d'artefacts résiduels.
 
 ![Comparaison sites performants vs problématiques](output/comparaison_sites_focus.png)
 
+Ligne 1 (volume d'activité moyen par site en gris) :
+- LEUVEN_1 : cerveau petit, FOV réduit
+- PITT, NYU : apparence normale
+- MAX_MUN : texture plus grossière (pixels plus gros = résolution spatiale plus faible)
+- OHSU : cerveau tronqué à droite
+
+Ligne 2 (cartes tSD en rouge/jaune montrant la déviation standard temporelle) 
+- LEUVEN_1 : sombre, variabilité concentrée au centre
+- PITT, NYU, MAX_MUN : points chauds intenses au centre
+- OHSU : variabilité diffuse sur tout le cerveau = signe d'artefacts
+
 Comparaison directe entre sites bien généralisés (LEUVEN_1, PITT) et problématiques
 (MAX_MUN, OHSU) en LOSO. Les volumes moyens révèlent des différences structurelles :
 MAX_MUN présente une résolution spatiale plus grossière, et OHSU un champ de vue
