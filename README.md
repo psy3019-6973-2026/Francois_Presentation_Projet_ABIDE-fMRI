@@ -186,7 +186,11 @@ ABIDE regroupe des enfants, adolescents et adultes (de ~7 à ~58 ans). Cette hé
 
 ### Justification du seuil (18 ans)
 
-La distribution des âges est bimodale avec un pic entre 7 et 18 ans (médiane : 14.65 ans ASD, 14.80 ans TD). Le seuil de 18 ans correspond à la frontière neurobiologique entre adolescence et âge adulte, période où les manifestations du TSA évoluent significativement. Ce filtre conserve 70% du dataset (613/871 participants) tout en réduisant l'hétérogénéité développementale.
+![Distribution de l'âge](output/age_distribution.png)
+
+Le seuil de 18 ans a été choisi car il est a la limite de l'enfant/adulte.
+Ce filtre conserve 70% du dataset (613/871 participants) 
+tout en réduisant l'hétérogénéité développementale.
 
 ### Description du sous-échantillon
 
@@ -194,6 +198,11 @@ La distribution des âges est bimodale avec un pic entre 7 et 18 ans (médiane :
 - Groupes bien appariés en âge (médiane ~13 ans pour les deux groupes, écart-type ~2.8 ans)
 - Score ADOS_TOTAL disponible pour 201/286 participants ASD (médiane : 11.0, étendue : 2–22)
 - 2 sites exclus faute d'effectif suffisant : CALTECH (1 sujet restant) et LEUVEN_1 (1 sujet dans la classe minoritaire)
+
+L'histogramme montre une distribution asymétrique avec un pic principal 
+entre 10 et 15 ans et une longue queue vers les adultes (jusqu'à ~58 ans). 
+La majorité des participants sont donc des enfants et adolescents 
+(médiane : 14.65 ans ASD, 14.80 ans TD). 
 
 ![Comparaison complet vs sous-échantillon](output/description_sous_echantillon.png)
 
