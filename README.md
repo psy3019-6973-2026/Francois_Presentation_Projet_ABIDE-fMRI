@@ -67,7 +67,9 @@ conda activate env_abide
 ```bash
 make prepare
 ```
-Cela télécharge les données ABIDE et calcule les features de connectivité.
+**Avertissement** : Cette étape qui télécharge les données ABIDE peut etre longue. 
+Selon votre connexion internet, le téléchargement peut prendre **plusieurs heures** (environ 8h). 
+ Prévoyez de lancer cette commande en arrière-plan ou avant une nuit.
 
 ## Reproduction complète
 
