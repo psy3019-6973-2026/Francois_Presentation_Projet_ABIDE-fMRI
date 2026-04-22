@@ -155,113 +155,17 @@ Contrairement à l'hypothèse initiale, les performances LOSO sont légèrement 
 **Figure produite** : `comparaison_cv.png`
 ![Comparaison des stratégies de validation croisée](output/comparaison_cv.png)
 
+Le panneau gauche compare la distribution des scores entre les deux 
+stratégies. Les performances LOSO sont comparables à l'intra-site en 
+moyenne, mais plus variables (outliers visibles). Le panneau droit 
+révèle l'hétérogénéité inter-site : 17 sites sur 20 dépassent le 
+niveau du hasard en LOSO, mais MAX_MUN, CALTECH et OHSU restent 
+en dessous de 0.5, indiquant une généralisation nulle pour ces sites.
 
 
 
 
-### Tâche 1 : Comparaison des stratégies de validation croisée selon les sites d'aquisition
 
-**Objectif de la tâche** :  
-
-L’objectif de cette tâche est de comprendre comment le choix de la stratégie de validation croisée influence les performances d’un modèle de classification ASD vs TD, lorsque les données proviennent de plusieurs sites d’acquisition.
-
-On cherche en effet à répondre à la problematique : Est-ce que les performances observées reflètent réellement une capacité à classer les participants présentant un trouble du spectre de l’autisme (TSA) de contrôles typiques (TD), ou bien sont-elles en partie dues aux différences entre les sites d’acquisition ?
-
-En effet, chaque site utilise :
-- un scanner différent (constructeur, champ magnétique, bobines),
-- des paramètres d’acquisition propres (TR, résolution, durée),
-- parfois une population différente (âge, sévérité clinique, critères de recrutement).
-
-Résultats : deux sujets identiques biologiquement mais venant de deux sites différents peuvent donc être classés différemment par le modèle
-
-**Description de la tâche** :  
-
-La validation croisée permet d’évaluer si les performances du modèle reposent sur des caractéristiques biologiques liées au diagnostic ou sur des caractéristiques spécifiques aux sites d’acquisition.
-
-Protocole :
-1) Préparer les données (mêmes données pour toutes les CV)
-- Charger les features (ex. matrice de connectivité / vecteurs de features) : X
-- Charger les labels diagnostiques : y (ASD=1, TD=0 par ex.)
-- Récupérer l’identifiant du site pour chaque sujet : site (variable de groupe)
-
-Sorties attendues :
-- X : matrice sujets × features
-- y : vecteur (n_sujets)
-- site : vecteur (n_sujets) indiquant le site d’acquisition
-
-2) Fixer le cadre expérimental (pour une comparaison équitable)
-
-Pour que la comparaison soit valide, on fige :
-- le même pipeline de preprocessing (ex. standardisation),
-- le même modèle (ex. Logistic Regression / SVM),
-- les mêmes hyperparamètres,
-- les mêmes métriques,
-- le même nombre de folds quand c’est applicable,
-- un random_state fixe (si la méthode utilise un shuffle).
-
-Seule chose qui change : la stratégie de validation croisée.
-
-3) Définir les stratégies de validation croisée à comparer
-
-Je vais tester trois validation croisée :
-1. StratifiedKFold
-
-Les sujets sont répartis aléatoirement en conservant l’équilibre ASD/TD dans chaque fold, sans tenir compte des sites.
-
-Le modèle voit :
-- des données du même scanner
-- des artefacts similaires
-- des signatures de site répétées
-
-Le modèle va apprendre des caractéristiques propres au site et les retrouver au test.
-
-**Si des effets de site sont présents, la StratifiedKFold va  surestimer des performances (car les données d’entraînement et les données test partagent des signatures de site similaires)**
-
-Le but ici est d’évaluer la performance du modèle dans un contexte où les données d’entraînement et de test proviennent des mêmes sites, ce qui peut conduire à une surestimation des performances.
-
-2. GroupKFold (group = site)
-
-Ici, chaque groupe correspond à un site d’acquisition.
-Donc quand on sépare les données, on s’assure qu’un site entier est laissé de côté pour le test.
-
-Concrètement, ça oblige le modèle à ne pas s’appuyer sur la signature du scanner.
-Il doit apprendre des motifs communs à tous les sites, donc quelque chose de plus robust
-
-Je devrais observer :
-- **Une baisse de performence (car le modele est pas preparer a voir de nouveau site)**
-- La variance entre folds qui augmente
-
-**L’objectif ici, c’est de tester la capacité du modèle à généraliser à un site complètement nouveau.
-Donc la en comparant ce test avec celui d'avant je vais pourvoir voir l'importance de l'effet de site.**
-
-Je vais donc mesurer ici : généralisation d'un site à un autre
-
-3. Leave-One-Site-Out (LOSO)
-
-Ici, le principe est très simple :
-je retire complètement un site du dataset.
-
-J’entraîne le modèle sur tous les autres sites, puis je teste uniquement sur le site que j’ai exclu.
-
-Ensuite, je répète exactement la même chose pour chaque site.
-
-Donc au final, j’obtiens une performance spécifique pour chaque site.
-
-Ce que ça me permet de voir, ce n’est pas seulement la performance moyenne, mais aussi si certains sites généralisent bien et si d’autres posent problème.
-
-
-Ces trois stratégies permettent d’évaluer différents niveaux de généralisation du modèle :
-- StratifiedKFold : le modèle est évalué sur des données statistiquement similaires à celles vues à l’entraînement, ce qui permet de mesurer sa capacité à reconnaître des données proches.
-- GroupKFold : le modèle est contraint de généraliser à des sites non vus pendant l’entraînement, fournissant une estimation plus réaliste de la généralisation inter-site.
-- Leave-One-Site-Out (LOSO) : le modèle est évalué successivement sur chaque site exclu, ce qui permet d’examiner l’hétérogénéité des performances entre sites et d’identifier d’éventuels sites pour lesquels la généralisation est plus difficile.
-
-
-**Lien avec le projet initial** :  
-Le projet ABIDE-IRMf de départ explore déjà différentes approches de validation croisée. Cette tâche s’inscrit dans sa continuité en proposant une comparaison plus structurée de ces stratégies, dans le but de mieux comprendre leur impact sur les résultats.
-
-**Pourquoi c’est pertinent** :  
-ABIDE regroupe des données provenant de plusieurs sites d’acquisition, ce qui introduit des différences liées aux scanners, aux protocoles et aux populations étudiées. Lorsque des données issues d’un même site sont présentes à la fois dans les ensembles d’entraînement et de test, le modèle peut exploiter des caractéristiques spécifiques au site, ce qui peut conduire à une surestimation des performances.  
-Les stratégies de validation croisée tenant compte des sites, comme *GroupKFold* ou *Leave-One-Site-Out*, permettent de contrôler cet effet en séparant explicitement les sites entre l’entraînement et le test, et offrent ainsi une évaluation plus réaliste de la capacité de généralisation des modèles.
 
 ### Tâche 2 : Analyse d’un sous-échantillon 
 
