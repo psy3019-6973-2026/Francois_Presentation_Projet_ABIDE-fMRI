@@ -268,7 +268,20 @@ Produire deux types de visualisations par site :
 
 ![Volume moyen par site](output/volume_moyen_par_site.png)
 
+Les volumes moyens révèlent des différences inter-sites visibles à l'œil nu :
+variations d'intensité globale (CMU et MAX_MUN plus sombres, PITT et SDSU plus
+clairs), différences de champ de vue (CALTECH, LEUVEN_1), et texture variable
+(OHSU plus bruité). Ces différences de protocole d'acquisition sont cohérentes
+avec la variabilité de performance observée en LOSO
+
 ![Carte tSD par site](output/tSD_par_site.png)
+
+Les cartes tSD révèlent des différences importantes entre sites : les
+échelles absolues varient d'un facteur ~4 (CALTECH ~280 vs LEUVEN_1
+~1200), reflétant des différences d'unités d'intensité entre scanners.
+La plupart des sites montrent des zones chaudes au centre du cerveau
+(ventricules, noyaux gris), mais KKI et NYU présentent des points chauds
+particulièrement intenses, suggestifs d'artefacts résiduels.
 
 ![Comparaison sites performants vs problématiques](output/comparaison_sites_focus.png)
 
