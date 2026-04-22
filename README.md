@@ -64,15 +64,15 @@ conda activate env_abide
 ```
 
 ### 3. Préparer les données
-```bash
-make prepare
-```
 **Avertissement** : Cette étape qui télécharge les données ABIDE peut etre longue. 
 Selon votre connexion internet, le téléchargement peut prendre **plusieurs heures** (environ 8h). 
  Prévoyez de lancer cette commande en arrière-plan ou avant une nuit.
+ 
+```bash
+make prepare
+```
 
 ## Reproduction complète
-
 Pour reproduire toutes les analyses :
 ```bash
 make run
@@ -84,6 +84,7 @@ make tache1   # Validation croisée intra-site vs LOSO
 make tache2   # Analyse du sous-échantillon par âge
 make tache3   # Visualisation des effets de site fMRI
 ```
+**Avertissement** : La tache 3 peut etre longue a excuter. Une des cellule prend environ 30 minutes.
 
 ## Structure du projet
 
