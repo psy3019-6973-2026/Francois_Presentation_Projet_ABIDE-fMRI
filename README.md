@@ -170,24 +170,31 @@ en dessous de 0.5, indiquant une généralisation nulle pour ces sites.
 
 
 
-### Tâche 2 : Analyse d’un sous-échantillon 
+## Tâche 2 : Analyse d’un sous-échantillon 
 
-**Objectif de la tâche** :  
-**L’objectif de cette tâche est d’évaluer l’impact des effets de site sur les performances du modèle en comparant une analyse multi-site à une analyse réalisée sur un seul site d’acquisition.**
+### Problème identifié
+ABIDE regroupe des enfants, adolescents et adultes (de ~7 à ~58 ans). Cette hétérogénéité d'âge peut masquer ou amplifier les différences de connectivité fonctionnelle entre ASD et TD, indépendamment du diagnostic. La tâche 1 n'avait pas contrôlé cette variable.
 
-**Le site utilisé pour l’analyse mono-site sera choisi après l’analyse LOSO de la tâche 1. Il sera choisie selon :**
-- **sa performance LOSO** : légèrement inférieure à la moyenne des autres sites, ce qui en fait un cas intéressant pour examiner l’impact potentiel des effets de site sur la généralisation du modèle
-- **sa taille d’échantillon** : suffisamment grande pour permettre une évaluation stable, avec au moins 50 sujets au total et au moins 20 sujets par classe (ASD et TD), afin d’éviter qu’un site trop petit rende les résultats trop bruités
+### Objectif
 
-**Description de la tâche** :  
-Dans la continuité de la tâche 1, cette analyse consiste à appliquer le même pipeline de classification sur un sous-ensemble mono-site, sélectionné à partir des résultats LOSO. Le modèle est entraîné et évalué uniquement sur les données provenant de ce site, en utilisant une validation croisée adaptée au contexte mono-site.
-Les performances obtenues (moyennes et variabilité entre folds) sont ensuite comparées à celles de l’analyse multi-site, afin d’examiner l’impact de l’hétérogénéité inter-sites sur la performance et la stabilité du modèle.
+1. Décrire le dataset complet : distribution d'âge, scores ADOS, composition ASD/TD par site
+2. Sélectionner un sous-échantillon : choisir un seuil d'âge justifié et reproduire le pipeline de classification de la tâche 1 sur ce sous-groupe
+3. Comparer les performances entre le dataset complet et le sous-échantillon
 
-**Lien avec le projet initial** :  
-Le projet ABIDE-IRMf utilise des données collectées dans plusieurs sites différents. Cette tâche permet de s’appuyer sur cette structure multi-site pour examiner plus concrètement l’effet des différences entre sites sur les résultats.
+### Justification du seuil (18 ans)
 
-**Pourquoi c’est pertinent** :  
-En se concentrant sur un seul site, on réduit les différences liées aux scanners et aux protocoles d’acquisition. Si les performances sont meilleures dans ce contexte, cela suggère que les effets de site peuvent compliquer l’entraînement de modèles capables de bien généraliser à l’ensemble des données ABIDE.
+La distribution des âges est bimodale avec un pic entre 7 et 18 ans (médiane : 14.65 ans ASD, 14.80 ans TD). Le seuil de 18 ans correspond à la frontière neurobiologique entre adolescence et âge adulte, période où les manifestations du TSA évoluent significativement. Ce filtre conserve 70% du dataset (613/871 participants) tout en réduisant l'hétérogénéité développementale.
+
+### Description du sous-échantillon
+
+- 613 participants (286 ASD, 327 TD) sur 18 site
+- Groupes bien appariés en âge (médiane ~13 ans pour les deux groupes, écart-type ~2.8 ans)
+- Score ADOS_TOTAL disponible pour 201/286 participants ASD (médiane : 11.0, étendue : 2–22)
+- 2 sites exclus faute d'effectif suffisant : CALTECH (1 sujet restant) et LEUVEN_1 (1 sujet dans la classe minoritaire)
+
+### Résultats
+
+
 
 ### Tâche 3 : Visualisations et interprétation des résultats 
 
