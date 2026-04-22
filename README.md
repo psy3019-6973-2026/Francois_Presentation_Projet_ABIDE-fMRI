@@ -285,8 +285,18 @@ particulièrement intenses, suggestifs d'artefacts résiduels.
 
 ![Comparaison sites performants vs problématiques](output/comparaison_sites_focus.png)
 
+Comparaison directe entre sites bien généralisés (LEUVEN_1, PITT) et problématiques
+(MAX_MUN, OHSU) en LOSO. Les volumes moyens révèlent des différences structurelles :
+MAX_MUN présente une résolution spatiale plus grossière, et OHSU un champ de vue
+tronqué. Les cartes tSD montrent qu'OHSU a une variabilité temporelle diffuse sur
+l'ensemble du cerveau, contrairement aux sites performants où elle est concentrée
+au centre. Ces signatures visuelles sont cohérentes avec l'échec de généralisation
+observé en tâche 1
 
-
+![Volume interactif NYU](output/volume_interactif_NYU.png)
+*Vue axiale interactive du volume moyen pour NYU. 
+La version HTML complète (`volume_interactif_NYU.html`) permet 
+de naviguer librement dans les coupes.*
 
 
 
