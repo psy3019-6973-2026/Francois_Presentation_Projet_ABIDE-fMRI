@@ -294,9 +294,10 @@ au centre. Ces signatures visuelles sont cohérentes avec l'échec de générali
 observé en tâche 1
 
 ![Volume interactif NYU](output/volume_interactif_NYU.png)
-*Vue axiale interactive du volume moyen pour NYU. 
+
+Vue axiale interactive du volume moyen pour NYU. 
 La version HTML complète (`volume_interactif_NYU.html`) permet 
-de naviguer librement dans les coupes.*
+de naviguer librement dans les coupes.
 
 
 
