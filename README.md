@@ -196,6 +196,8 @@ La distribution des âges est bimodale avec un pic entre 7 et 18 ans (médiane :
 - 2 sites exclus faute d'effectif suffisant : CALTECH (1 sujet restant) et LEUVEN_1 (1 sujet dans la classe minoritaire)
 
 ### Résultats
+![Comparaison complet vs sous-échantillon](output/description_sous_echantillon.png)
+
 ![Comparaison complet vs sous-échantillon](output/comparaison_complet_vs_sub.png)
 
 | Stratégie | Balanced Accuracy | ROC-AUC |
