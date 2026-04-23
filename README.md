@@ -106,10 +106,8 @@ make tache3   # Visualisation des effets de site fMRI
 
 ## 3. Présentation des tâches :
 
-J'ai choisi 3 tâches selon un fil conducteur selon leur limite : et si la classification n'est pas robuste a cause d'un effet de site ? : 
-- Tâche 1 → y a t'il un effet de site  ?
-- Tâche 2 → que se passe-t-il dans un sous-échantillon ?
-- Tâche 3 → comment interpréter proprement ce qu’on observe ?
+- Tâche 1 et 2 → features extraites : les matrices de connectivité fonctionnelle (BASC064) sous forme de fichiers
+- Tâche 3 → fichiers fMRI bruts prétraités (func_preproc.nii.gz)
 
 ## Tâche 1 : Comparaison des stratégies de validation croisée selon les sites
 
@@ -235,10 +233,7 @@ La variabilité inter-site reste présente dans le sous-échantillon :
 
 ### Tâche 3 : Visualisations et interprétation des résultats 
 
- **Note pour la tâche 3** : Les fichiers fMRI bruts (`.nii.gz`) sont 
-téléchargés automatiquement par `make prepare`. Le téléchargement 
-complet peut prendre plusieurs heures (~87 Go). Si les fichiers sont 
-déjà disponibles, placer les dans `data/ABIDE_pcp/cpac/nofilt_noglobal/`.
+ **Note pour la tâche 3** : Les données utilisées sont des IRMf bruts prétraiter
 
 ### Problème identifié
 
