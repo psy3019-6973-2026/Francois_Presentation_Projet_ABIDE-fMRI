@@ -120,13 +120,13 @@ un scanner différent, des paramètres d'acquisition propres et parfois
 une population différente. Si les données d'entraînement et de test
 proviennent des mêmes sites, le modèle peut apprendre à reconnaître
 la signature du scanner plutôt qu'une vraie signature biologique de
-l'autisme — ce qui conduit à une surestimation des performances.
+l'autisme, ce qui conduit à une surestimation des performances.
 
 ### Objectif
 
 Comparer deux stratégies de validation croisée pour mesurer dans quelle
 mesure les performances reflètent une vraie capacité de classification
-vs. un artefact de site :
+vs un artefact de site :
 
 - **5-Fold stratifié par site (intra-site)** : chaque site est représenté
   proportionnellement dans le train et le test. Le modèle voit les mêmes
@@ -176,7 +176,7 @@ Pour tout déploiement clinique multi-sites, ces résultats suggèrent qu'une va
 ## Tâche 2 : Analyse d’un sous-échantillon 
 
 ### Problème identifié
-ABIDE regroupe des enfants, adolescents et adultes (de ~7 à ~58 ans). Cette hétérogénéité d'âge peut masquer ou amplifier les différences de connectivité fonctionnelle entre ASD et TD, indépendamment du diagnostic. La tâche 1 n'avait pas contrôlé cette variable.
+ABIDE regroupe des enfants, adolescents et adultes (d'environ 7 à 58 ans). Cette hétérogénéité d'âge peut masquer ou amplifier les différences de connectivité fonctionnelle entre ASD et TD, indépendamment du diagnostic. La tâche 1 n'avait pas contrôlé cette variable.
 
 ### Objectif
 
@@ -195,12 +195,12 @@ tout en réduisant l'hétérogénéité développementale.
 ### Description du sous-échantillon
 
 - 613 participants (286 ASD, 327 TD) sur 18 site
-- Groupes bien appariés en âge (médiane ~13 ans pour les deux groupes, écart-type ~2.8 ans)
+- Groupes bien appariés en âge (médiane envrion 13 ans pour les deux groupes, écart-type environ 2.8 ans)
 - Score ADOS_TOTAL disponible pour 201/286 participants ASD (médiane : 11.0, étendue : 2–22)
 - 2 sites exclus faute d'effectif suffisant : CALTECH (1 sujet restant) et LEUVEN_1 (1 sujet dans la classe minoritaire)
 
 L'histogramme montre une distribution asymétrique avec un pic principal 
-entre 10 et 15 ans et une longue queue vers les adultes (jusqu'à ~58 ans). 
+entre 10 et 15 ans et une longue queue vers les adultes (jusqu'à 58 ans). 
 La majorité des participants sont donc des enfants et adolescents 
 (médiane : 14.65 ans ASD, 14.80 ans TD). 
 
@@ -226,8 +226,8 @@ Restreindre l'analyse aux participants de moins de 18 ans produit une légère b
 des performances (−0.007 en intra-site, −0.028 en LOSO) ce qui suggère que l'hétérogénéité d'âge n'est pas la principale source de variabilité dans ABIDE.
 
 La variabilité inter-site reste présente dans le sous-échantillon :
-- **LEUVEN_1** : balanced accuracy = 1.000, mais seulement 2 sujets en test — résultat non fiable
-- **CALTECH** : 1 seul sujet en test, accuracy = 0.000, ROC-AUC = NaN — non interprétable
+- **LEUVEN_1** : balanced accuracy = 1.000, mais seulement 2 sujets en test 
+- **CALTECH** : 1 seul sujet en test, accuracy = 0.000, ROC-AUC = NaN 
 - **OHSU** s'améliore (0.558 vs 0.442 en LOSO complet), suggérant que ses participants adultes 
   étaient particulièrement difficiles à classer
 - **MAX_MUN** (0.500) et **STANFORD** (0.519) restent proches du hasard
@@ -286,8 +286,8 @@ avec la variabilité de performance observée en LOSO
 ![Carte tSD par site](output/tSD_par_site.png)
 
 Les cartes tSD révèlent des différences importantes entre sites : les
-échelles absolues varient d'un facteur ~4 (CALTECH ~280 vs LEUVEN_1
-~1200), reflétant des différences d'unités d'intensité entre scanners.
+échelles absolues varient d'un facteur 4 (CALTECH 280 vs LEUVEN_1
+1200), reflétant des différences d'unités d'intensité entre scanners.
 La plupart des sites montrent des zones chaudes au centre du cerveau
 (ventricules, noyaux gris), mais KKI et NYU présentent des points chauds
 particulièrement intenses, suggestifs d'artefacts résiduels.
