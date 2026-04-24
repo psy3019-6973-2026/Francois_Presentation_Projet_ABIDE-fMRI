@@ -92,12 +92,12 @@ make tache3   # Visualisation des effets de site fMRI
 ├── code/                          # Scripts originaux du projet de base
 │   ├── prepare_data.py            # Téléchargement et extraction des features
 │   └── *.ipynb                    # Notebooks originaux
-├── notebook/                      # Contributions — tâches du projet
+├── notebook/                      # Tâches du projet
 │   ├── Tache1_validation_croisee_v2.ipynb
 │   ├── Tache2_sous_echantillon.ipynb
 │   └── Tache3_effets_de_site_fMRI.ipynb
 ├── data/                          # Données ABIDE (générées par prepare_data.py)
-├── output/                        # Features extraites (.npz)
+├── output/                        # Features extraites + figures genere
 ├── Makefile                       # Commandes de reproduction
 ├── environment.yml                # Environnement conda
 └── requirements-modern.txt        # Dépendances pip
