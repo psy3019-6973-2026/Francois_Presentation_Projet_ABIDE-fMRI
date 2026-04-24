@@ -64,13 +64,15 @@ conda activate env_abide
 ```
 
 ### 3. Préparer les données
+**Avertissement** : Cette étape qui télécharge les données ABIDE peut etre longue. 
+Selon votre connexion internet, le téléchargement peut prendre **plusieurs heures** (environ 8h). 
+ Prévoyez de lancer cette commande en arrière-plan ou avant une nuit.
+ 
 ```bash
 make prepare
 ```
-Cela télécharge les données ABIDE et calcule les features de connectivité.
 
 ## Reproduction complète
-
 Pour reproduire toutes les analyses :
 ```bash
 make run
@@ -82,6 +84,7 @@ make tache1   # Validation croisée intra-site vs LOSO
 make tache2   # Analyse du sous-échantillon par âge
 make tache3   # Visualisation des effets de site fMRI
 ```
+**Avertissement** : La tache 3 peut etre longue a excuter. Une des cellule prend environ 30 minutes.
 
 ## Structure du projet
 
@@ -89,12 +92,12 @@ make tache3   # Visualisation des effets de site fMRI
 ├── code/                          # Scripts originaux du projet de base
 │   ├── prepare_data.py            # Téléchargement et extraction des features
 │   └── *.ipynb                    # Notebooks originaux
-├── notebook/                      # Contributions — tâches du projet
+├── notebook/                      # Tâches du projet
 │   ├── Tache1_validation_croisee_v2.ipynb
 │   ├── Tache2_sous_echantillon.ipynb
 │   └── Tache3_effets_de_site_fMRI.ipynb
 ├── data/                          # Données ABIDE (générées par prepare_data.py)
-├── output/                        # Features extraites (.npz)
+├── output/                        # Features extraites + figures genere
 ├── Makefile                       # Commandes de reproduction
 ├── environment.yml                # Environnement conda
 └── requirements-modern.txt        # Dépendances pip
@@ -103,10 +106,8 @@ make tache3   # Visualisation des effets de site fMRI
 
 ## 3. Présentation des tâches :
 
-J'ai choisi 3 tâches selon un fil conducteur selon leur limite : et si la classification n'est pas robuste a cause d'un effet de site ? : 
-- Tâche 1 → y a t'il un effet de site  ?
-- Tâche 2 → que se passe-t-il dans un sous-échantillon ?
-- Tâche 3 → comment interpréter proprement ce qu’on observe ?
+- Tâche 1 et 2 → features extraites : les matrices de connectivité fonctionnelle (BASC064) sous forme de fichiers
+- Tâche 3 → fichiers fMRI bruts prétraités (func_preproc.nii.gz)
 
 ## Tâche 1 : Comparaison des stratégies de validation croisée selon les sites
 
@@ -117,13 +118,13 @@ un scanner différent, des paramètres d'acquisition propres et parfois
 une population différente. Si les données d'entraînement et de test
 proviennent des mêmes sites, le modèle peut apprendre à reconnaître
 la signature du scanner plutôt qu'une vraie signature biologique de
-l'autisme — ce qui conduit à une surestimation des performances.
+l'autisme, ce qui conduit à une surestimation des performances.
 
 ### Objectif
 
 Comparer deux stratégies de validation croisée pour mesurer dans quelle
 mesure les performances reflètent une vraie capacité de classification
-vs. un artefact de site :
+vs un artefact de site :
 
 - **5-Fold stratifié par site (intra-site)** : chaque site est représenté
   proportionnellement dans le train et le test. Le modèle voit les mêmes
@@ -145,194 +146,175 @@ vs. un artefact de site :
 
 ### Résultats
 
-| Stratégie | Balanced Accuracy | ROC-AUC |
-|-----------|:-----------------:|:-------:|
-| Intra-site (5-fold) | ~0.65 | ~0.70 |
-| LOSO (moyenne) | ~0.59 | ~0.64 |
+| Stratégie             | Balanced Accuracy | ROC-AUC |
+|-----------------------|-------------------|---------|
+| Intra-site (5-fold)   | 0.651             | 0.703   |
+| LOSO (moy. pondérée)  | 0.661             | 0.718   |
 
-La chute de performance entre intra-site et LOSO confirme que le modèle
-exploite en partie les effets de site. La variabilité inter-sites est
-importante : LEUVEN_1 et PITT atteignent une balanced accuracy ~0.75,
-tandis qu'OHSU (0.442) et MAX_MUN (0.499) sont au niveau du hasard.
+Contrairement à l'hypothèse initiale, les performances LOSO sont légèrement supérieures à l'intra-site, ce qui suggère que le modèle ne dépend pas fortement des effets de site au niveau global. La principale observation est la forte variabilité inter-site : LEUVEN_1 (0.750), LEUVEN_2 (0.740) et PITT (0.737) généralisent bien, tandis que OHSU (0.442), CALTECH (0.450) et MAX_MUN (0.499) sont au niveau du hasard
 
 **Figure produite** : `comparaison_cv.png`
 ![Comparaison des stratégies de validation croisée](output/comparaison_cv.png)
 
+Le panneau gauche compare la distribution des scores entre les deux 
+stratégies. Les performances LOSO sont comparables à l'intra-site en 
+moyenne, mais plus variables (outliers visibles). Le panneau droit 
+révèle l'hétérogénéité inter-site : 17 sites sur 20 dépassent le 
+niveau du hasard en LOSO, mais MAX_MUN, CALTECH et OHSU restent 
+en dessous de 0.5, indiquant une généralisation nulle pour ces sites.
+
+### Discussion
+La légère supériorité du LOSO sur l'intra-site (0.661 vs 0.651) doit être interprétée avec prudence : la validation intra-site a été contrainte à 2 folds effectifs par site en raison du faible effectif de certains sites, ce qui peut avoir sous-estimé les performances intra-site.
+La principale conclusion est la forte hétérogénéité inter-site : 3 sites sur 20 (OHSU, CALTECH, MAX_MUN) obtiennent une balanced accuracy ≤ 0.5 en LOSO, indiquant une généralisation nulle. Ces sites présentent probablement des caractéristiques d'acquisition ou de population non représentées dans les autres sites. À l'inverse, les sites bien généralisés (LEUVEN_1, PITT, SDSU) semblent partager suffisamment de caractéristiques avec le reste du dataset.
+Pour tout déploiement clinique multi-sites, ces résultats suggèrent qu'une validation explicite sur chaque nouveau site est nécessaire avant utilisation.
 
 
 
 
-### Tâche 1 : Comparaison des stratégies de validation croisée selon les sites d'aquisition
+## Tâche 2 : Analyse d’un sous-échantillon 
 
-**Objectif de la tâche** :  
+### Problème identifié
+ABIDE regroupe des enfants, adolescents et adultes (d'environ 7 à 58 ans). Cette hétérogénéité d'âge peut masquer ou amplifier les différences de connectivité fonctionnelle entre ASD et TD, indépendamment du diagnostic. La tâche 1 n'avait pas contrôlé cette variable.
 
-L’objectif de cette tâche est de comprendre comment le choix de la stratégie de validation croisée influence les performances d’un modèle de classification ASD vs TD, lorsque les données proviennent de plusieurs sites d’acquisition.
+### Objectif
 
-On cherche en effet à répondre à la problematique : Est-ce que les performances observées reflètent réellement une capacité à classer les participants présentant un trouble du spectre de l’autisme (TSA) de contrôles typiques (TD), ou bien sont-elles en partie dues aux différences entre les sites d’acquisition ?
+1. Décrire le dataset complet : distribution d'âge, scores ADOS, composition ASD/TD par site
+2. Sélectionner un sous-échantillon : choisir un seuil d'âge justifié et reproduire le pipeline de classification de la tâche 1 sur ce sous-groupe
+3. Comparer les performances entre le dataset complet et le sous-échantillon
 
-En effet, chaque site utilise :
-- un scanner différent (constructeur, champ magnétique, bobines),
-- des paramètres d’acquisition propres (TR, résolution, durée),
-- parfois une population différente (âge, sévérité clinique, critères de recrutement).
+### Justification du seuil (18 ans)
 
-Résultats : deux sujets identiques biologiquement mais venant de deux sites différents peuvent donc être classés différemment par le modèle
+![Distribution de l'âge](output/age_distribution.png)
 
-**Description de la tâche** :  
+Le seuil de 18 ans a été choisi car il est a la limite de l'enfant/adulte.
+Ce filtre conserve 70% du dataset (613/871 participants) 
+tout en réduisant l'hétérogénéité développementale.
 
-La validation croisée permet d’évaluer si les performances du modèle reposent sur des caractéristiques biologiques liées au diagnostic ou sur des caractéristiques spécifiques aux sites d’acquisition.
+### Description du sous-échantillon
 
-Protocole :
-1) Préparer les données (mêmes données pour toutes les CV)
-- Charger les features (ex. matrice de connectivité / vecteurs de features) : X
-- Charger les labels diagnostiques : y (ASD=1, TD=0 par ex.)
-- Récupérer l’identifiant du site pour chaque sujet : site (variable de groupe)
+- 613 participants (286 ASD, 327 TD) sur 18 site
+- Groupes bien appariés en âge (médiane envrion 13 ans pour les deux groupes, écart-type environ 2.8 ans)
+- Score ADOS_TOTAL disponible pour 201/286 participants ASD (médiane : 11.0, étendue : 2–22)
+- 2 sites exclus faute d'effectif suffisant : CALTECH (1 sujet restant) et LEUVEN_1 (1 sujet dans la classe minoritaire)
 
-Sorties attendues :
-- X : matrice sujets × features
-- y : vecteur (n_sujets)
-- site : vecteur (n_sujets) indiquant le site d’acquisition
+L'histogramme montre une distribution asymétrique avec un pic principal 
+entre 10 et 15 ans et une longue queue vers les adultes (jusqu'à 58 ans). 
+La majorité des participants sont donc des enfants et adolescents 
+(médiane : 14.65 ans ASD, 14.80 ans TD). 
 
-2) Fixer le cadre expérimental (pour une comparaison équitable)
+![Comparaison complet vs sous-échantillon](output/description_sous_echantillon.png)
 
-Pour que la comparaison soit valide, on fige :
-- le même pipeline de preprocessing (ex. standardisation),
-- le même modèle (ex. Logistic Regression / SVM),
-- les mêmes hyperparamètres,
-- les mêmes métriques,
-- le même nombre de folds quand c’est applicable,
-- un random_state fixe (si la méthode utilise un shuffle).
-
-Seule chose qui change : la stratégie de validation croisée.
-
-3) Définir les stratégies de validation croisée à comparer
-
-Je vais tester trois validation croisée :
-1. StratifiedKFold
-
-Les sujets sont répartis aléatoirement en conservant l’équilibre ASD/TD dans chaque fold, sans tenir compte des sites.
-
-Le modèle voit :
-- des données du même scanner
-- des artefacts similaires
-- des signatures de site répétées
-
-Le modèle va apprendre des caractéristiques propres au site et les retrouver au test.
-
-**Si des effets de site sont présents, la StratifiedKFold va  surestimer des performances (car les données d’entraînement et les données test partagent des signatures de site similaires)**
-
-Le but ici est d’évaluer la performance du modèle dans un contexte où les données d’entraînement et de test proviennent des mêmes sites, ce qui peut conduire à une surestimation des performances.
-
-2. GroupKFold (group = site)
-
-Ici, chaque groupe correspond à un site d’acquisition.
-Donc quand on sépare les données, on s’assure qu’un site entier est laissé de côté pour le test.
-
-Concrètement, ça oblige le modèle à ne pas s’appuyer sur la signature du scanner.
-Il doit apprendre des motifs communs à tous les sites, donc quelque chose de plus robust
-
-Je devrais observer :
-- **Une baisse de performence (car le modele est pas preparer a voir de nouveau site)**
-- La variance entre folds qui augmente
-
-**L’objectif ici, c’est de tester la capacité du modèle à généraliser à un site complètement nouveau.
-Donc la en comparant ce test avec celui d'avant je vais pourvoir voir l'importance de l'effet de site.**
-
-Je vais donc mesurer ici : généralisation d'un site à un autre
-
-3. Leave-One-Site-Out (LOSO)
-
-Ici, le principe est très simple :
-je retire complètement un site du dataset.
-
-J’entraîne le modèle sur tous les autres sites, puis je teste uniquement sur le site que j’ai exclu.
-
-Ensuite, je répète exactement la même chose pour chaque site.
-
-Donc au final, j’obtiens une performance spécifique pour chaque site.
-
-Ce que ça me permet de voir, ce n’est pas seulement la performance moyenne, mais aussi si certains sites généralisent bien et si d’autres posent problème.
+### Résultats
 
 
-Ces trois stratégies permettent d’évaluer différents niveaux de généralisation du modèle :
-- StratifiedKFold : le modèle est évalué sur des données statistiquement similaires à celles vues à l’entraînement, ce qui permet de mesurer sa capacité à reconnaître des données proches.
-- GroupKFold : le modèle est contraint de généraliser à des sites non vus pendant l’entraînement, fournissant une estimation plus réaliste de la généralisation inter-site.
-- Leave-One-Site-Out (LOSO) : le modèle est évalué successivement sur chaque site exclu, ce qui permet d’examiner l’hétérogénéité des performances entre sites et d’identifier d’éventuels sites pour lesquels la généralisation est plus difficile.
+
+| Stratégie | Balanced Accuracy | ROC-AUC |
+|---|---|---|
+| Intra-site — complet | 0.651 | 0.703 |
+| LOSO — complet | 0.661 | 0.718 |
+| Intra-site — ≤18 ans | 0.644 | 0.701 |
+| LOSO — ≤18 ans | 0.633 | 0.699 |
 
 
-**Lien avec le projet initial** :  
-Le projet ABIDE-IRMf de départ explore déjà différentes approches de validation croisée. Cette tâche s’inscrit dans sa continuité en proposant une comparaison plus structurée de ces stratégies, dans le but de mieux comprendre leur impact sur les résultats.
+![Comparaison complet vs sous-échantillon](output/comparaison_complet_vs_sub.png)
 
-**Pourquoi c’est pertinent** :  
-ABIDE regroupe des données provenant de plusieurs sites d’acquisition, ce qui introduit des différences liées aux scanners, aux protocoles et aux populations étudiées. Lorsque des données issues d’un même site sont présentes à la fois dans les ensembles d’entraînement et de test, le modèle peut exploiter des caractéristiques spécifiques au site, ce qui peut conduire à une surestimation des performances.  
-Les stratégies de validation croisée tenant compte des sites, comme *GroupKFold* ou *Leave-One-Site-Out*, permettent de contrôler cet effet en séparant explicitement les sites entre l’entraînement et le test, et offrent ainsi une évaluation plus réaliste de la capacité de généralisation des modèles.
+Les quatre stratégies restent bien au-dessus du hasard (0.5), et les performances 
+du sous-échantillon sont comparables au dataset complet.
+Restreindre l'analyse aux participants de moins de 18 ans produit une légère baisse 
+des performances (−0.007 en intra-site, −0.028 en LOSO) ce qui suggère que l'hétérogénéité d'âge n'est pas la principale source de variabilité dans ABIDE.
 
-### Tâche 2 : Analyse d’un sous-échantillon 
+La variabilité inter-site reste présente dans le sous-échantillon :
+- **LEUVEN_1** : balanced accuracy = 1.000, mais seulement 2 sujets en test 
+- **CALTECH** : 1 seul sujet en test, accuracy = 0.000, ROC-AUC = NaN 
+- **OHSU** s'améliore (0.558 vs 0.442 en LOSO complet), suggérant que ses participants adultes 
+  étaient particulièrement difficiles à classer
+- **MAX_MUN** (0.500) et **STANFORD** (0.519) restent proches du hasard
 
-**Objectif de la tâche** :  
-**L’objectif de cette tâche est d’évaluer l’impact des effets de site sur les performances du modèle en comparant une analyse multi-site à une analyse réalisée sur un seul site d’acquisition.**
-
-**Le site utilisé pour l’analyse mono-site sera choisi après l’analyse LOSO de la tâche 1. Il sera choisie selon :**
-- **sa performance LOSO** : légèrement inférieure à la moyenne des autres sites, ce qui en fait un cas intéressant pour examiner l’impact potentiel des effets de site sur la généralisation du modèle
-- **sa taille d’échantillon** : suffisamment grande pour permettre une évaluation stable, avec au moins 50 sujets au total et au moins 20 sujets par classe (ASD et TD), afin d’éviter qu’un site trop petit rende les résultats trop bruités
-
-**Description de la tâche** :  
-Dans la continuité de la tâche 1, cette analyse consiste à appliquer le même pipeline de classification sur un sous-ensemble mono-site, sélectionné à partir des résultats LOSO. Le modèle est entraîné et évalué uniquement sur les données provenant de ce site, en utilisant une validation croisée adaptée au contexte mono-site.
-Les performances obtenues (moyennes et variabilité entre folds) sont ensuite comparées à celles de l’analyse multi-site, afin d’examiner l’impact de l’hétérogénéité inter-sites sur la performance et la stabilité du modèle.
-
-**Lien avec le projet initial** :  
-Le projet ABIDE-IRMf utilise des données collectées dans plusieurs sites différents. Cette tâche permet de s’appuyer sur cette structure multi-site pour examiner plus concrètement l’effet des différences entre sites sur les résultats.
-
-**Pourquoi c’est pertinent** :  
-En se concentrant sur un seul site, on réduit les différences liées aux scanners et aux protocoles d’acquisition. Si les performances sont meilleures dans ce contexte, cela suggère que les effets de site peuvent compliquer l’entraînement de modèles capables de bien généraliser à l’ensemble des données ABIDE.
 
 ### Tâche 3 : Visualisations et interprétation des résultats 
 
-> **Note pour la tâche 3** : Les fichiers fMRI bruts (`.nii.gz`) sont 
-> téléchargés automatiquement par `make prepare`. Le téléchargement 
-> complet peut prendre plusieurs heures (~87 Go). Si les fichiers sont 
-> déjà disponibles, placer les dans `data/ABIDE_pcp/cpac/nofilt_noglobal/`.
->
-> 
+ **Note pour la tâche 3** : Les données utilisées sont des IRMf bruts prétraiter
 
-**Objectif de la tâche** :  
-L’objectif de cette tâche est de faciliter l’interprétation des résultats obtenus dans les tâches 1 et 2, en allant au-delà des scores globaux de performance.
-Il s’agit d’évaluer visuellement :
-- la stabilité des modèles selon la stratégie de validation croisée,
-- l’hétérogénéité des performances entre sites,
-- et l’impact de l’effet de site sur la capacité de généralisation
+### Problème identifié
 
-**Description de la tâche** :  
-Cette tâche consiste à produire des visualisations directement issues des analyses précédentes.
-Les figures principales seront :
+Les tâches 1 et 2 ont montré que les performances varient fortement
+selon les sites, sans que l'âge en soit la cause principale. La tâche 3
+remonte en amont pour examiner si ces effets de site sont **visibles
+directement dans les données fMRI brutes**, avant toute extraction de
+features.
 
-1. Distribution des scores selon la stratégie de validation croisée (Violon plots)
-- Axe x : stratégie de validation croisée (StratifiedKFold, GroupKFold, LOSO)
-- Axe y : score de performance (ex. AUC ou accuracy)
-- Chaque point représente un fold ou un site (dans le cas du LOSO)
+### Objectif
 
-Cette visualisation permet d’évaluer :
-- la stabilité des performances,
-- la variance entre folds,
-- et une éventuelle surestimation des performances lorsque les effets de site ne sont pas contrôlés.
+Produire deux types de visualisations par site :
 
-2. Performance par site (LOSO) Barplot avec ligne horizontale représentant la moyenne)
-- Axe x : sites d’acquisition
-- Axe y : score obtenu lorsque le site est laissé de côté (LOSO)
-- Ligne horizontale : moyenne globale des performances inter-site
+1. **Volume moyen par site** : moyenne voxel par voxel de toutes les
+   images fMRI d'un site. Les différences d'intensité, de champ de vue
+   ou de contraste entre sites sont directement visibles.
+2. **Carte d'écart-type temporel (tSD) par site** : écart-type voxel
+   par voxel sur la série temporelle de chaque sujet, moyenné par site.
+   Les zones à forte variabilité temporelle révèlent des artefacts
+   spécifiques au site.
 
-Cette figure permet de :
-- visualiser l’hétérogénéité inter-sites,
-- identifier les sites “difficiles” ou proches du hasard,
+### Étapes réalisées
 
+- Parsing des fichiers `func_preproc.nii.gz` et mapping vers les noms
+  de sites du phénotype
+- Calcul du volume moyen (`nilearn.image.mean_img`) et de la carte tSD
+  pour chaque site, sujet par sujet pour éviter la saturation mémoire
+- Gestion des images de dimensions différentes par rééchantillonnage
+- Visualisation de tous les sites (coupes axiales)
+- Comparaison ciblée des sites performants (LEUVEN_1, PITT) vs
+  problématiques (OHSU, MAX_MUN) en LOSO
 
-**Lien avec le projet initial** :  
-Le projet ABIDE-IRMf propose principalement des évaluations quantitatives globales des modèles.
-Cette tâche enrichit l’analyse en ajoutant une dimension visuelle permettant d’examiner plus finement la stabilité des performances et l’impact des effets de site, qui ne sont pas explicitement explorés dans le projet initial.
+**Avertissement** : Le calcul des cartes (section 3) peut prendre 30 minutes 
 
-**Pourquoi c’est pertinent** :  
-Les effets de site constituent un enjeu majeur dans les bases de données multi-sites comme ABIDE.
+### Résultats
 
-Les visualisations permettent :
-- de détecter une surestimation potentielle des performances,
-- d’illustrer la variabilité inter-site
+![Volume moyen par site](output/volume_moyen_par_site.png)
 
+Les volumes moyens révèlent des différences inter-sites visibles à l'œil nu :
+variations d'intensité globale (CMU et MAX_MUN plus sombres, PITT et SDSU plus
+clairs), différences de champ de vue (CALTECH, LEUVEN_1), et texture variable
+(OHSU plus bruité). Ces différences de protocole d'acquisition sont cohérentes
+avec la variabilité de performance observée en LOSO
+
+![Carte tSD par site](output/tSD_par_site.png)
+
+Les cartes tSD révèlent des différences importantes entre sites : les
+échelles absolues varient d'un facteur 4 (CALTECH 280 vs LEUVEN_1
+1200), reflétant des différences d'unités d'intensité entre scanners.
+La plupart des sites montrent des zones chaudes au centre du cerveau
+(ventricules, noyaux gris), mais KKI et NYU présentent des points chauds
+particulièrement intenses, suggestifs d'artefacts résiduels.
+
+![Comparaison sites performants vs problématiques](output/comparaison_sites_focus.png)
+
+Ligne 1 (volume d'activité moyen par site en gris) :
+- LEUVEN_1 : cerveau petit, FOV réduit
+- PITT, NYU : apparence normale
+- MAX_MUN : texture plus grossière (pixels plus gros = résolution spatiale plus faible)
+- OHSU : cerveau tronqué à droite
+
+Ligne 2 (cartes tSD en rouge/jaune montrant la déviation standard temporelle) 
+- LEUVEN_1 : sombre, variabilité concentrée au centre
+- PITT, NYU, MAX_MUN : points chauds intenses au centre
+- OHSU : variabilité diffuse sur tout le cerveau = signe d'artefacts
+
+Comparaison directe entre sites bien généralisés (LEUVEN_1, PITT) et problématiques
+(MAX_MUN, OHSU) en LOSO. Les volumes moyens révèlent des différences structurelles :
+MAX_MUN présente une résolution spatiale plus grossière, et OHSU un champ de vue
+tronqué. Les cartes tSD montrent qu'OHSU a une variabilité temporelle diffuse sur
+l'ensemble du cerveau, contrairement aux sites performants où elle est concentrée
+au centre. Ces signatures visuelles sont cohérentes avec l'échec de généralisation
+observé en tâche 1
+
+![Volume interactif NYU](output/volume_interactif_NYU.png)
+
+Vue orthogonale (sagittale, coronale, axiale) du volume moyen fMRI 
+pour NYU.
+
+Note 1 : La visualisation interactive est fortement inspirée du notebook de cours `psy3019_visualisation.ipynb` (Marie-Eve Picard).
+
+Note 2 : Ce projet a été réalisé a l'aide l'IA générative (Claude) 
+
+Merci :)
