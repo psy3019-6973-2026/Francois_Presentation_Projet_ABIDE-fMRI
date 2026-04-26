@@ -133,40 +133,186 @@ vs un artefact de site :
   utilisé uniquement pour le test. Répété pour chaque site. Simule le
   scénario réaliste d'application à un nouveau site inconnu.
 
-### Étapes réalisées
+### Le modèle utilisé : régression logistique
+#### Vulgarisation scientifique
 
+Une regression logistique est un modèle lineaire.
+
+**C'est quoi un modèle linéaire :**
+
+Le modèle c'est la machine qui prédit ASD ou TD.
+
+Ici, le modèle linéaire fait une addition pondérée des connexions avec le poids 
+(connexion 1 × poids 1 + connexion 2 × poids 2 + connexion 3 × poids 3 + ...)
+
+**C'est quoi une regression logistique :**
+
+La régression logistique est un modèle linéaire, mais elle va une étape plus loin : elle transforme le score final en une probabilité entre 0 et 1.
+- Proche de 1 = "probablement ASD"
+- Proche de 0 = "probablement TD"
+
+**qu'est ce qu'on obtient avec tout ca ?**
+
+On obtient trois choses : 
+
+1. **Accuracy** :
+combien de fois le modele a eu juste
+
+2. **Balanced accuracy** :
+Par exemple, sur un groupe de 9 TD et 1 ASD, un modèle qui dit "tout le monde est TD" obtient 90% d'accuracy, mais il n'a détecté aucun ASD... :(
+La balanced accuracy corrige ça en calculant séparément le taux de bonne détection chez les ASD, et le taux de bonne détection chez les TD
+Puis elle fait la moyenne des deux.
+Donc dans cet exemple, le modèle qui avant avait 90% d'accuracy en ignorant complètement les ASD obtient maintenant 50% (le niveau du hasard)
+
+3. **ROC-AUC** :
+
+La note qu'on donne au modèle après avoir regardé toutes ses prédictions à tous les seuils possibles.
+- ROC-AUC = 0.5 → modèle nul (équivalent au hasard)
+- ROC-AUC = 0.7 → correct 
+- ROC-AUC = 1.0 → modèle parfait
+
+Pour réaliser une régression logistique, j'ai fais : 
 - Chargement des features ABIDE (matrice de connectivité BASC064)
-- Définition d'un pipeline fixe : `StandardScaler → LogisticRegression`
-  (même modèle, mêmes hyperparamètres pour les deux stratégies)
-- Implémentation d'un 5-fold stratifié par site avec gestion des sites
-  à faible effectif
-- Implémentation du LOSO avec `LeaveOneGroupOut`
-- Comparaison des performances (accuracy, balanced accuracy, ROC-AUC)
-- Visualisation : boxplot comparatif + barplot LOSO par site
 
-### Résultats
+```python
+base_model = Pipeline([
+    ("scaler", StandardScaler()),   # normalise les connexions
+    ("clf", LogisticRegression(max_iter=1000, random_state=42))  # modèle
+])
+```
+Maintenant que nous avons fait la regression logistique, notre but est d'évaluer le modèle. C'est ce qu'on appelle la **validation croisée**
+
+### Comparer les deux stratégies de validation croisée
+#### Validation croisée 1 : 5-Fold stratifié par site (intra-site)
+
+Cette stratégie simule ce qui se passe quand on entraîne et teste sur les **mêmes sites**. Donc le modèle a déjà "vu" ces sites à l'entraînement.
+
+Le 5-fold stratifié par site découpe chaque site en 5 groupes en s'assurant que chaque site est toujours représenté dans l'entraînement ET le test
+
+Concrètement :
+
+- On prend NYU → coupe en 5 groupes
+- On prend CMU → coupe en 5 groupes
+- On prend PITT → coupe en 5 groupes
+- ...
+
+Pourquoi 5 ?
+
+Avec 1 seul fold → on test sur un groupe qui est peut-être facile ou difficile par hasard → résultat pas fiable
+
+Avec 5 folds → on test sur 5 groupes différents → on fait la moyenne → résultat beaucoup plus stable et fiable
+
+Note : pour les sites avec très peu de participants (ex: CALTECH, CMU), le nombre de folds est réduit  automatiquement pour éviter des groupes trop petits.
+
+**Comment c'est implémenté :**
+
+La fonction `kfold_within_site` découpe chaque site séparément en 5 groupes, puis assemble les groupes de tous les sites pour former chaque fold. Si un site a trop peu de participants, le nombre de folds est réduit automatiquement.
+
+Pour les détails du code, voir : 
+`notebook/Tache1_validation_croisee_v2.ipynb`
+
+**Résultats : Intra-site (5-fold stratifié par site)**
+
+| Fold | Accuracy | Balanced Accuracy | ROC-AUC |
+|------|----------|-------------------|---------|
+| 0 | 0.710 | 0.704 | 0.748 |
+| 1 | 0.616 | 0.612 | 0.683 |
+| 2 | 0.672 | 0.671 | 0.729 |
+| 3 | 0.676 | 0.675 | 0.714 |
+| 4 | 0.593 | 0.593 | 0.641 |
+| **Moyenne** | **0.654** | **0.651** | **0.703** |
+
+**Interprétation**
+Le modèle obtient une balanced accuracy de 0.651, ce qui veut dire que la regression logistique apprend quelque chose de réel, car il est bien au-dessus du hasard (0.5)
+
+J'aurai penser que le modèle serait meilleur puisqu'il connaît déjà les sites, mais il obtient seulement 65% parce que le modèle voit les mêmes sites mais pas les mêmes personnes, il doit toujours généraliser à de nouveaux participants. 
+Cela montre que le signal biologique de l'autisme dans la connectivité cérébrale doit etre faible.
+
+Les 5 folds donnent des scores qui varient entre 0.593 et 0.7, ce qui montre que le résultat dépend du groupe testé 
+
+#### Validation croisée 2 : Leave-One-Site-Out (LOSO)
+
+Contrairement au 5-fold intra-site, le LOSO teste le modèle sur des sites qu'il a jamais vus à l'entraînement
+
+Concrètement, avec 20 sites :
+- Itération 1 : entraîne sur 19 sites, teste sur CALTECH
+- Itération 2 : entraîne sur 19 sites, teste sur CMU
+- ...
+- Itération 20 : entraîne sur 19 sites, teste sur YALE
+
+Comme on a 20 sites, on répète 20 fois (une itération par site)
+
+Le but c'est de simuler ce qui se passerait si on appliquait le modèle à un nouvel hôpital inconnu.
+On veut donc repondre a la question : 
+**Est-ce que le modèle généralise bien à des données qu'il n'a jamais vues ?**
+
+**Comment c'est implémenté :**
+
+La fonction `LeaveOneGroupOut` de scikit-learn génère automatiquement les itérations, à chaque tour, un site différent est mis de côté 
+pour le test et le modèle est entraîné sur les 19 autres sites.
+
+La moyenne finale est **pondérée par le nombre de participants** par site, les grands sites (NYU=172) comptent plus que les petits (CMU=11) dans la moyenne globale.
+
+Pour les détails du code, voir : 
+`notebook/Tache1_validation_croisee_v2.ipynb`
+
+**Résultats LOSO (sites interressant)**
+
+*Tableau complet des 20 sites disponible dans le notebook.*
+
+| Site | Balanced Accuracy | ROC-AUC |
+|------|-------------------|---------|
+| LEUVEN_1 | 0.750 | 0.663 |
+| PITT | 0.737 | 0.777 |
+| NYU | 0.654 | 0.725 |
+| MAX_MUN | 0.499 | 0.503 |
+| CALTECH | 0.450 | 0.560 |
+| OHSU | 0.442 | 0.455 |
+| **Moyenne pondérée** | **0.661** | **0.718** |
+
+**Interprétation des résultats LOSO :**
+Nous voulions répondre a la question : 
+
+Est-ce que le modèle généralise bien à des données qu'il n'a jamais vues ?
+Et bien cela **dépend du site**
+
+
+Sites qui généralisent le mieux : LEUVEN_1, LEUVEN_2, PITT → balanced accuracy de 0.737 a 0.750
+→ Le modèle arrive à prédire ASD vs TD même sans avoir vu ces sites
+
+Sites qui sont dans le seuil du hasard : OHSU, CALTECH, MAX_MUN (balanced accuracy inferieur à 0.5)
+→ Le modèle échoue complètement sur ces sites (pourquoi ?)
+
+
+ **Note:**
+ J'ai regardé la descriptons des sites où le seuils est inferieur au hasard
+- OHSU (n=25, 48% ASD)
+- CALTECH (n=15, 33% ASD)
+- MAX_MUN (n=46, 41% ASD)
+ 
+La proportion ASD/TD est raisonnable pour les trois sites. Donc l'échec de généralisation n'est pas dû à un déséquilibre des classes
+
+C'est probablement un effet de site (des caractéristiques d'acquisition différentes que le modèle ne reconnaît pas)
+
+Pour CALTECH avec un n=15, le résultat est aussi peu fiable statistiquement
+
+
+#### Tableau résumé comparatif
 
 | Stratégie             | Balanced Accuracy | ROC-AUC |
 |-----------------------|-------------------|---------|
 | Intra-site (5-fold)   | 0.651             | 0.703   |
 | LOSO (moy. pondérée)  | 0.661             | 0.718   |
 
-Contrairement à l'hypothèse initiale, les performances LOSO sont légèrement supérieures à l'intra-site, ce qui suggère que le modèle ne dépend pas fortement des effets de site au niveau global. La principale observation est la forte variabilité inter-site : LEUVEN_1 (0.750), LEUVEN_2 (0.740) et PITT (0.737) généralisent bien, tandis que OHSU (0.442), CALTECH (0.450) et MAX_MUN (0.499) sont au niveau du hasard
+La moyenne cache la variabilité, en moyenne le modèle semble robuste (LOSO presque égaux a intra-site), mais 3 sites sur 20 échouent 
+complètement. Les causes de cet échec seront explorées dans les tâches 2 (âge) et 3 (images fMRI brutes)
 
 **Figure produite** : `comparaison_cv.png`
 ![Comparaison des stratégies de validation croisée](output/comparaison_cv.png)
 
-Le panneau gauche compare la distribution des scores entre les deux 
-stratégies. Les performances LOSO sont comparables à l'intra-site en 
-moyenne, mais plus variables (outliers visibles). Le panneau droit 
-révèle l'hétérogénéité inter-site : 17 sites sur 20 dépassent le 
-niveau du hasard en LOSO, mais MAX_MUN, CALTECH et OHSU restent 
-en dessous de 0.5, indiquant une généralisation nulle pour ces sites.
 
-### Discussion
-La légère supériorité du LOSO sur l'intra-site (0.661 vs 0.651) doit être interprétée avec prudence : la validation intra-site a été contrainte à 2 folds effectifs par site en raison du faible effectif de certains sites, ce qui peut avoir sous-estimé les performances intra-site.
-La principale conclusion est la forte hétérogénéité inter-site : 3 sites sur 20 (OHSU, CALTECH, MAX_MUN) obtiennent une balanced accuracy ≤ 0.5 en LOSO, indiquant une généralisation nulle. Ces sites présentent probablement des caractéristiques d'acquisition ou de population non représentées dans les autres sites. À l'inverse, les sites bien généralisés (LEUVEN_1, PITT, SDSU) semblent partager suffisamment de caractéristiques avec le reste du dataset.
-Pour tout déploiement clinique multi-sites, ces résultats suggèrent qu'une validation explicite sur chaque nouveau site est nécessaire avant utilisation.
+
+
 
 
 
