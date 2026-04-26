@@ -15,7 +15,7 @@ help:
 	@echo "  make tache2    -> lance la tâche 2 (sous-échantillon par âge)"
 	@echo "  make tache3    -> lance la tâche 3 (effets de site fMRI)"
 	@echo "  make run       -> lance toutes les tâches"
-    @echo "  make clean     -> supprime les figures du dossier output (garde les features .npz)"
+	@echo "  make clean     -> supprime les figures du dossier output (garde les features .npz)"
 install:
 	pip install -r requirements-modern.txt
 
