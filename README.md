@@ -328,13 +328,83 @@ ABIDE regroupe des enfants, adolescents et adultes (d'environ 7 à 58 ans). Cett
 2. Sélectionner un sous-échantillon : choisir un seuil d'âge justifié et reproduire le pipeline de classification de la tâche 1 sur ce sous-groupe
 3. Comparer les performances entre le dataset complet et le sous-échantillon
 
-### Justification du seuil (18 ans)
-
+### Description complete du data-set
+#### Distribution age
 ![Distribution de l'âge](output/age_distribution.png)
 
-Le seuil de 18 ans a été choisi car il est a la limite de l'enfant/adulte.
-Ce filtre conserve 70% du dataset (613/871 participants) 
-tout en réduisant l'hétérogénéité développementale.
+Le graphique gauche montre que la majorité des participants ont entre 8 et 20 ans. La distribution est asymétrique avec une  longue queue vers les adultes.
+
+Le graphique droit montre que l'âge varie beaucoup selon les sites :
+- STANFORD et KKI : participants très jeunes (médiane d'environ 10 ans)
+- SBL  participants plus âgés (médiane d'environ 30 ans)
+
+Cette variabilité d'âge inter-site peut contribuer aux effets de site observés en tâche 1 
+
+#### Distribution du score ADOS_TOTAL (participants ASD uniquement)
+
+| Statistique | ADOS_TOTAL |
+|-------------|------------|
+| count | 282 / 403 ASD |
+| mean | 11.75 |
+| std | 3.74 |
+| min | 2.00 |
+| 25% | 9.00 |
+| médiane (50%) | 12.00 |
+| 75% | 14.00 |
+| max | 22.00 |
+
+282 participants ASD sur 403 ont un score ADOS disponible (30% de données manquantes).
+
+Le score médian est 12.
+L'étendue (2 à 22) montre que le dataset inclut des profils très variés dans le spectre de l'autisme
+
+**Attention** Cette diversité de profils autistiques peut rendre la classification plus difficile (ex. un participant ASD avec un score de 2 ressemble probablement plus à un TD qu'un participant avec un score de 22)
+
+**Figure produite** : `ados_distribution.png`
+![Distribution du score ADOS](output/ados_distribution.png)
+
+Le graphique gauche montre que les scores ADOS sont concentrés entre 8 et 16
+
+Le graphique droit montre que les profils autistiques varient selon les sites :
+- OLIN, UCLA_2, CALTECH → scores plus élevés 
+- OHSU, SBL → scores plus bas 
+
+Cette variabilité inter-site des profils autistiques pourrait contribuer aux effets de site observés en tâche 1. 
+OHSU par exemple a des participants ASD avec des scores ADOS plus bas, ce qui signifie que leurs profils de connectivité ressemblent 
+davantage à ceux des TD, rendant la classification plus difficile.
+
+#### Composition par site (ratio ASD/TD)
+
+| Site | Age médian | Age min | Age max |
+|------|-----------|---------|---------|
+| STANFORD | 9.3 | 7.5 | 12.9 |
+| KKI | 10.2 | 8.2 | 12.8 |
+| OHSU | 10.5 | 8.0 | 15.2 |
+| LEUVEN_1 | 22.0 | 18.0 | 32.0 |
+| SBL | 33.5 | 20.0 | 49.0 |
+| MAX_MUN | 26.5 | 7.0 | 58.0 |
+
+Le tableau montre une grande hétérogénéité d'âge entre les sites :
+- Certains sites recrutent exclusivement des enfants  (STANFORD, KKI, OHSU où age_max < 16 ans)
+- D'autres recrute exclusivement des adultes (LEUVEN_1 age_min=18 ans, SBL age_min=20 ans)
+
+Cette variabilité inter-site d'âge pourrait expliquer une partie des effets de site observés en tâche 1
+
+**Figure produite** : `composition_par_site.png`
+![Composition ASD/TD par site](output/composition_par_site.png)
+
+NYU domine largement le dataset avec 172 participants presque le double du deuxième site (UM_1)
+
+On remarque aussi que certains sites ont un déséquilibre ASD/TD notable :
+
+- USM : plus d'ASD que de TD
+- SDSU : plus de TD que d'ASD
+Ce déséquilibre peut affecter les performances du modèle sur ces sites spécifiques.
+
+
+### Justification du seuil (18 ans)
+
+
 
 ### Description du sous-échantillon
 
