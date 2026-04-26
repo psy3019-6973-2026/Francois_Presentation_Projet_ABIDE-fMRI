@@ -338,7 +338,6 @@ Le graphique droit montre que l'âge varie beaucoup selon les sites :
 - STANFORD et KKI : participants très jeunes (médiane d'environ 10 ans)
 - SBL  participants plus âgés (médiane d'environ 30 ans)
 
-Cette variabilité d'âge inter-site peut contribuer aux effets de site observés en tâche 1 
 
 #### Distribution du score ADOS_TOTAL (participants ASD uniquement)
 
@@ -369,9 +368,6 @@ Le graphique droit montre que les profils autistiques varient selon les sites :
 - OLIN, UCLA_2, CALTECH → scores plus élevés 
 - OHSU, SBL → scores plus bas 
 
-Cette variabilité inter-site des profils autistiques pourrait contribuer aux effets de site observés en tâche 1. 
-OHSU par exemple a des participants ASD avec des scores ADOS plus bas, ce qui signifie que leurs profils de connectivité ressemblent 
-davantage à ceux des TD, rendant la classification plus difficile.
 
 #### Composition par site (ratio ASD/TD)
 
@@ -388,7 +384,6 @@ Le tableau montre une grande hétérogénéité d'âge entre les sites :
 - Certains sites recrutent exclusivement des enfants  (STANFORD, KKI, OHSU où age_max < 16 ans)
 - D'autres recrute exclusivement des adultes (LEUVEN_1 age_min=18 ans, SBL age_min=20 ans)
 
-Cette variabilité inter-site d'âge pourrait expliquer une partie des effets de site observés en tâche 1
 
 **Figure produite** : `composition_par_site.png`
 ![Composition ASD/TD par site](output/composition_par_site.png)
@@ -400,6 +395,12 @@ On remarque aussi que certains sites ont un déséquilibre ASD/TD notable :
 - USM : plus d'ASD que de TD
 - SDSU : plus de TD que d'ASD
 Ce déséquilibre peut affecter les performances du modèle sur ces sites spécifiques.
+
+#### Conclusion de la description du dataset :
+Le dataset ABIDE présente trois sources de variabilité inter-site des profils autistiques qui pourrait contribuer aux effets de site observés en tâche 1 : 
+1. **L'âge** : de 7 à 58 ans, avec des sites spécialisés enfants vs adultes
+2. **Les profils autistiques** : scores ADOS variés selon les sites
+3. **La composition ASD/TD** : NYU domine, certains sites déséquilibrés
 
 
 ### Justification du seuil (18 ans)
