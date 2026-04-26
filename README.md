@@ -263,6 +263,7 @@ Pour les détails du code, voir :
 | Site | Balanced Accuracy | ROC-AUC |
 |------|-------------------|---------|
 | LEUVEN_1 | 0.750 | 0.663 |
+| LEUVEN_2 | 0.740 | 0.740 |
 | PITT | 0.737 | 0.777 |
 | NYU | 0.654 | 0.725 |
 | MAX_MUN | 0.499 | 0.503 |
