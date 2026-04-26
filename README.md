@@ -515,40 +515,29 @@ Les effets de site viennent probablement d'autres facteurs comme les différence
 
 
 
-### Tâche 3 : Visualisations et interprétation des résultats 
+
+## Tâche 3 : Visualisations et interprétation des résultats 
 
  **Note pour la tâche 3** : Les données utilisées sont des IRMf bruts prétraiter
 
 ### Problème identifié
 
-Les tâches 1 et 2 ont montré que les performances varient fortement
-selon les sites, sans que l'âge en soit la cause principale. La tâche 3
-remonte en amont pour examiner si ces effets de site sont **visibles
-directement dans les données fMRI brutes**, avant toute extraction de
-features.
+Les tâches 1 et 2 ont montré que les performances varient fortement selon les sites, sans que l'âge en soit la cause principale. La tâche 3 va regarder directement si ces effets de site sont **visibles  dans les données fMRI brutes**, avant toute extraction de features.
 
 ### Objectif
 
 Produire deux types de visualisations par site :
 
-1. **Volume moyen par site** : moyenne voxel par voxel de toutes les
-   images fMRI d'un site. Les différences d'intensité, de champ de vue
-   ou de contraste entre sites sont directement visibles.
-2. **Carte d'écart-type temporel (tSD) par site** : écart-type voxel
-   par voxel sur la série temporelle de chaque sujet, moyenné par site.
-   Les zones à forte variabilité temporelle révèlent des artefacts
-   spécifiques au site.
+1. **Volume moyen par site** : moyenne voxel par voxel de toutes le  images fMRI d'un site. Les différences d'intensité, de champ de vue ou de contraste entre sites sont directement visibles.
+2. **Carte d'écart-type temporel (tSD) par site** : écart-type voxel par voxel sur la série temporelle de chaque sujet, moyenné par site. Les zones à forte variabilité temporelle révèlent des artefacts spécifiques au site.
 
 ### Étapes réalisées
 
-- Parsing des fichiers `func_preproc.nii.gz` et mapping vers les noms
-  de sites du phénotype
-- Calcul du volume moyen (`nilearn.image.mean_img`) et de la carte tSD
-  pour chaque site, sujet par sujet pour éviter la saturation mémoire
+- Parsing des fichiers `func_preproc.nii.gz` et mapping vers les noms de sites du phénotype
+- Calcul du volume moyen (`nilearn.image.mean_img`) et de la carte tSD pour chaque site, sujet par sujet pour éviter la saturation mémoire
 - Gestion des images de dimensions différentes par rééchantillonnage
 - Visualisation de tous les sites (coupes axiales)
-- Comparaison ciblée des sites performants (LEUVEN_1, PITT) vs
-  problématiques (OHSU, MAX_MUN) en LOSO
+- Comparaison ciblée des sites performants (LEUVEN_1, PITT) vs problématiques (OHSU, MAX_MUN) en LOSO
 
 **Avertissement** : Le calcul des cartes (section 3) peut prendre 30 minutes 
 
@@ -557,47 +546,63 @@ Produire deux types de visualisations par site :
 ![Volume moyen par site](output/volume_moyen_par_site.png)
 
 Les volumes moyens révèlent des différences inter-sites visibles à l'œil nu :
-variations d'intensité globale (CMU et MAX_MUN plus sombres, PITT et SDSU plus
-clairs), différences de champ de vue (CALTECH, LEUVEN_1), et texture variable
-(OHSU plus bruité). Ces différences de protocole d'acquisition sont cohérentes
-avec la variabilité de performance observée en LOSO
+- **Intensité** : CMU est plus sombre, NYU plus clairs → différences de paramètres d'acquisition
+- **Résolution** : MAX_MUN a une texture plus grossière  → résolution spatiale plus faible
+
 
 ![Carte tSD par site](output/tSD_par_site.png)
 
-Les cartes tSD révèlent des différences importantes entre sites : les
-échelles absolues varient d'un facteur 4 (CALTECH 280 vs LEUVEN_1
-1200), reflétant des différences d'unités d'intensité entre scanners.
-La plupart des sites montrent des zones chaudes au centre du cerveau
-(ventricules, noyaux gris), mais KKI et NYU présentent des points chauds
-particulièrement intenses, suggestifs d'artefacts résiduels.
+Pour chaque voxel du cerveau, on calcule combien il varie dans le temps
 
+- Rouge foncé = voxel qui varie peu → stable
+- Jaune/blanc = voxel qui varie beaucoup → instable
+
+Ce qu'on voit normalement :
+Les zones jaunes devraient être concentrées au centre du cerveau : dans les ventricules et les grandes veines, car ces zones ont naturellement beaucoup de signal BOLD.
+
+Ce qu'on observe dans les figures :
+
+- PITT, NYU : points chauds au centre → normal
+- OHSU : variabilité plus diffuse sur tout le cerveau → signe d'artefacts 
+- CALTECH : échelle très différente (2.8e+0.2 vs 1.2e+03 pour LEUVEN_1) → unités différentes entre scanners
+  
 ![Comparaison sites performants vs problématiques](output/comparaison_sites_focus.png)
 
-Ligne 1 (volume d'activité moyen par site en gris) :
-- LEUVEN_1 : cerveau petit, FOV réduit
-- PITT, NYU : apparence normale
-- MAX_MUN : texture plus grossière (pixels plus gros = résolution spatiale plus faible)
-- OHSU : cerveau tronqué à droite
 
-Ligne 2 (cartes tSD en rouge/jaune montrant la déviation standard temporelle) 
-- LEUVEN_1 : sombre, variabilité concentrée au centre
-- PITT, NYU, MAX_MUN : points chauds intenses au centre
-- OHSU : variabilité diffuse sur tout le cerveau = signe d'artefacts
+**Ligne 1 : Volume moyen :**
+- **Intensité** : LEUVEN_1 est plus sombre que PITT et NYU → différences de paramètres d'acquisition entre scanners
+- **Résolution** : MAX_MUN a une texture plus grossière  → résolution spatiale plus faible
 
-Comparaison directe entre sites bien généralisés (LEUVEN_1, PITT) et problématiques
-(MAX_MUN, OHSU) en LOSO. Les volumes moyens révèlent des différences structurelles :
-MAX_MUN présente une résolution spatiale plus grossière, et OHSU un champ de vue
-tronqué. Les cartes tSD montrent qu'OHSU a une variabilité temporelle diffuse sur
-l'ensemble du cerveau, contrairement aux sites performants où elle est concentrée
-au centre. Ces signatures visuelles sont cohérentes avec l'échec de généralisation
-observé en tâche 1
+**Ligne 2 : Carte tSD :**
+- PITT, NYU : normal 
+- OHSU : artefacts  → voir interprétation carte tSD ci-dessus
+  
+**Lien avec la tâche 1 :**
+Ces différences visuelles expliquent pourquoi certains sites généralisent mal en LOSO :
+- OHSU (BA=0.442) : variabilité diffuse sur tout le cerveau → artefacts résiduels que le modèle ne reconnaît pas
+- MAX_MUN (BA=0.499) : résolution plus faible → données structurellement différentes des autres sites
+
+À l'inverse, PITT (BA=0.737) et LEUVEN_1 (BA=0.750) ont des images propres → le modèle généralise bien sur ces sites.
+
+La tâche 2 avait montré que ce n'est pas l'âge qui explique ces différences. La tâche 3 confirme que c'est bien les **caractéristiques d'acquisition des scanners** qui sont en cause.
+
 
 ![Volume interactif NYU](output/volume_interactif_NYU.png)
 
-Vue orthogonale (sagittale, coronale, axiale) du volume moyen fMRI 
-pour NYU.
+Vue orthogonale (sagittale, coronale, axiale) du volume moyen fMRI pour NYU.
 
-Note 1 : La visualisation interactive est fortement inspirée du notebook de cours `psy3019_visualisation.ipynb` (Marie-Eve Picard).
+Note : La visualisation interactive est fortement inspirée du notebook de cours `psy3019_visualisation.ipynb` (Marie-Eve Picard).
+
+Attention : L'apparence "T1-like" de cette visualisation est due à la normalisation automatique de `nilearn.plotting.view_img`. 
+Les fichiers sont bien des fMRI 4D (dimensions 61×73×61×176, valeurs BOLD normales de -6098 à +9307).
+
+## Conclusion
+
+- **Tâche 1** : certains sites généralisent mal (OHSU, MAX_MUN)
+- **Tâche 2** : ce n'est pas dû à l'âge
+- **Tâche 3** : c'est dû aux différences d'acquisition des scanners 
+
+
 
 Note 2 : Ce projet a été réalisé a l'aide l'IA générative (Claude) 
 
