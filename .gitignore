@@ -1,0 +1,5 @@
+notebook/*.png
+notebook/*.html
+**/.ipynb_checkpoints/
+data/
+output/.ipynb_checkpoints/
