@@ -339,6 +339,20 @@ Le graphique droit montre que l'âge varie beaucoup selon les sites :
 - SBL  participants plus âgés (médiane d'environ 30 ans)
 
 
+| Site | Age médian | Age min | Age max |
+|------|-----------|---------|---------|
+| STANFORD | 9.3 | 7.5 | 12.9 |
+| KKI | 10.2 | 8.2 | 12.8 |
+| OHSU | 10.5 | 8.0 | 15.2 |
+| LEUVEN_1 | 22.0 | 18.0 | 32.0 |
+| SBL | 33.5 | 20.0 | 49.0 |
+| MAX_MUN | 26.5 | 7.0 | 58.0 |
+
+Le tableau montre une grande hétérogénéité d'âge entre les sites :
+- Certains sites recrutent exclusivement des enfants  (STANFORD, KKI, OHSU où age_max < 16 ans)
+- D'autres recrute exclusivement des adultes (LEUVEN_1 age_min=18 ans, SBL age_min=20 ans)
+
+
 #### Distribution du score ADOS_TOTAL (participants ASD uniquement)
 
 | Statistique | ADOS_TOTAL |
@@ -368,22 +382,7 @@ Le graphique droit montre que les profils autistiques varient selon les sites :
 - OLIN, UCLA_2, CALTECH → scores plus élevés 
 - OHSU, SBL → scores plus bas 
 
-
-#### Composition par site (ratio ASD/TD)
-
-| Site | Age médian | Age min | Age max |
-|------|-----------|---------|---------|
-| STANFORD | 9.3 | 7.5 | 12.9 |
-| KKI | 10.2 | 8.2 | 12.8 |
-| OHSU | 10.5 | 8.0 | 15.2 |
-| LEUVEN_1 | 22.0 | 18.0 | 32.0 |
-| SBL | 33.5 | 20.0 | 49.0 |
-| MAX_MUN | 26.5 | 7.0 | 58.0 |
-
-Le tableau montre une grande hétérogénéité d'âge entre les sites :
-- Certains sites recrutent exclusivement des enfants  (STANFORD, KKI, OHSU où age_max < 16 ans)
-- D'autres recrute exclusivement des adultes (LEUVEN_1 age_min=18 ans, SBL age_min=20 ans)
-
+#### Composition ASD/TD par site
 
 **Figure produite** : `composition_par_site.png`
 ![Composition ASD/TD par site](output/composition_par_site.png)
@@ -405,24 +404,98 @@ Le dataset ABIDE présente trois sources de variabilité inter-site des profils 
 
 ### Justification du seuil (18 ans)
 
+Seuil choisi à 18 ans pour 2 raisons :
+
+1. **La distribution le justifie**
+L'histogramme montre que la majorité des participants ont moins de 18 ans (médiane environ 14 ans). Les adultes sont une minorité avec une longue queue jusqu'à 58 ans.
+
+2. **C'est une frontière neurobiologique**
+Les profils de connectivité cérébrale changent beaucoup entre l'adolescence et l'âge adulte. En gardant seulement les moins de 18 ans, on réduit cette source de variabilité.
+
+En fixant le seuil a 18 ans, on conserve **70% de l'échantillon** (613/871 participants). Le ratio ASD/TD reste raisonnable (286 ASD vs 327 TD).
+
+**Note** :
+
+2 sites sont exclus car ils n'avaient pas de participant de moins de 18 ans :
+- **SBL** : age_min = 20 ans
+- **CMU** : age_min = 19 ans
+
+CALTECH reste dans le sous-échantillon mais avec seulement **1 participant** (ses résultats LOSO seront peu fiables statistiquement)
 
 
-### Description du sous-échantillon
+### Description du sous-échantillon (≤18 ans)
 
-- 613 participants (286 ASD, 327 TD) sur 18 site
-- Groupes bien appariés en âge (médiane envrion 13 ans pour les deux groupes, écart-type environ 2.8 ans)
-- Score ADOS_TOTAL disponible pour 201/286 participants ASD (médiane : 11.0, étendue : 2–22)
-- 2 sites exclus faute d'effectif suffisant : CALTECH (1 sujet restant) et LEUVEN_1 (1 sujet dans la classe minoritaire)
+**Âge par groupe :**
 
-L'histogramme montre une distribution asymétrique avec un pic principal 
-entre 10 et 15 ans et une longue queue vers les adultes (jusqu'à 58 ans). 
-La majorité des participants sont donc des enfants et adolescents 
-(médiane : 14.65 ans ASD, 14.80 ans TD). 
+| Groupe | n | Moyenne | Std | Min | Médiane | Max |
+|--------|---|---------|-----|-----|---------|-----|
+| ASD | 286 | 13.03 | 2.80 | 7.00 | 13.04 | 18.0 |
+| TD | 327 | 12.99 | 2.74 | 6.47 | 13.25 | 18.0 |
+
+Les groupes ASD et TD sont très bien appariés en âge dans le sous-échantillon :
+- ASD médiane : 13.04 ans
+- TD médiane : 13.25 ans
+
+C'est encore mieux qu'dans le dataset complet (14.65 vs 14.80) 
+
+**ADOS_TOTAL : sous-échantillon ASD :**
+
+| Statistique | Valeur |
+|-------------|--------|
+| count | 201 / 286 ASD |
+| mean | 11.65 |
+| médiane | 11.00 |
+| min | 2.00 |
+| max | 22.00 |
+
+Les scores ADOS sont similaires au dataset complet (médiane 11 vs 12) 
+
+Donc le sous-échantillon représente bien la diversité des profils autistiques.
+
 
 ![Comparaison complet vs sous-échantillon](output/description_sous_echantillon.png)
 
-### Résultats
+**Graphique gauche : Distribution d'âge :**
+La distribution est maintenant homogène : tous les participants ont entre 7 et 18 ans, avec un pic autour de 13-14 ans. Les groupes ASD et TD sont bien appariés en âge. 
 
+**Graphique milieu : ADOS_TOTAL :**
+La distribution des scores ADOS est similaire au dataset complet (médiane 11 vs 12). Le filtrage par âge n'a pas changé les profils autistiques.
+
+**Panneau droit : Composition par site :**
+NYU domine toujours le sous-échantillon. LEUVEN_1 et CALTECH ont très peu de participants → leurs résultats LOSO seront peu fiables statistiquement.
+
+### Résultats de classification : sous-échantillon (≤18 ans)
+
+#### Intra-site (5-fold)
+
+| Fold | Accuracy | Balanced Accuracy | ROC-AUC |
+|------|----------|-------------------|---------|
+| 0 | 0.717 | 0.716 | 0.744 |
+| 1 | 0.632 | 0.631 | 0.674 |
+| 2 | 0.631 | 0.629 | 0.718 |
+| 3 | 0.625 | 0.626 | 0.691 |
+| 4 | 0.621 | 0.618 | 0.679 |
+| **Moyenne** | **0.645** | **0.644** | **0.701** |
+
+#### LOSO (Sites intéressants du sous-échantillon) :
+
+| Site | n_test | Balanced Accuracy | ROC-AUC |
+|------|--------|-------------------|---------|
+| LEUVEN_1 | 2 | 1.000 | 1.000 |
+| YALE | 41 | 0.724 | 0.734 |
+| OHSU | 25 | 0.558 | 0.596 |
+| MAX_MUN | 10 | 0.500 | 0.440 |
+| CALTECH | 1 | 0.000 | NaN |
+| **Moyenne pondérée** | | **0.633** | **0.699** |
+
+LEUVEN_1 : BA=1.000 mais seulement 2 sujets en test → pas fiable
+CALTECH : 1 seul sujet en test → pas interprétable
+OHSU s'améliore (0.442 → 0.558) quand on retire les adultes → Ses participants adultes étaient particulièrement difficiles à classifier
+
+L'âge explique partiellement les effets de site pour OHSU, mais pas pour MAX_MUN qui reste au niveau du hasard (0.5).
+L'hétérogénéité d'âge n'est donc pas la principale source de variabilité dans ABIDE
+
+#### Tableau comparatif complet vs sous-échantillon
 
 
 | Stratégie | Balanced Accuracy | ROC-AUC |
@@ -435,17 +508,12 @@ La majorité des participants sont donc des enfants et adolescents
 
 ![Comparaison complet vs sous-échantillon](output/comparaison_complet_vs_sub.png)
 
-Les quatre stratégies restent bien au-dessus du hasard (0.5), et les performances 
-du sous-échantillon sont comparables au dataset complet.
-Restreindre l'analyse aux participants de moins de 18 ans produit une légère baisse 
-des performances (−0.007 en intra-site, −0.028 en LOSO) ce qui suggère que l'hétérogénéité d'âge n'est pas la principale source de variabilité dans ABIDE.
+### Conclusion tâche 2 :
+L'âge n'est pas la principale source de variabilité dans ABIDE.
+Les effets de site viennent probablement d'autres facteurs comme
+les différences d'acquisition des scanners → exploré en tâche 3 !
 
-La variabilité inter-site reste présente dans le sous-échantillon :
-- **LEUVEN_1** : balanced accuracy = 1.000, mais seulement 2 sujets en test 
-- **CALTECH** : 1 seul sujet en test, accuracy = 0.000, ROC-AUC = NaN 
-- **OHSU** s'améliore (0.558 vs 0.442 en LOSO complet), suggérant que ses participants adultes 
-  étaient particulièrement difficiles à classer
-- **MAX_MUN** (0.500) et **STANFORD** (0.519) restent proches du hasard
+
 
 
 ### Tâche 3 : Visualisations et interprétation des résultats 
