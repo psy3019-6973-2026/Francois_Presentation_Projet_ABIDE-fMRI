@@ -510,8 +510,7 @@ L'hétérogénéité d'âge n'est donc pas la principale source de variabilité 
 
 ### Conclusion tâche 2 :
 L'âge n'est pas la principale source de variabilité dans ABIDE.
-Les effets de site viennent probablement d'autres facteurs comme
-les différences d'acquisition des scanners → exploré en tâche 3 !
+Les effets de site viennent probablement d'autres facteurs comme les différences d'acquisition des scanners, ce qu'on cherche à explorer en tâche 3
 
 
 
